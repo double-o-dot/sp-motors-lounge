@@ -110,14 +110,60 @@ input{font:inherit}
 .steam path:nth-child(2){animation-delay:1.1s}.steam path:nth-child(3){animation-delay:2.1s}
 @keyframes steam{0%{opacity:0;transform:translateY(8px)}30%{opacity:.8}100%{opacity:0;transform:translateY(-26px)}}
 #carLift{transition:transform 2.6s cubic-bezier(.45,0,.25,1)}
-.lowered #carLift{transform:translateY(140px)}
-#mechWork,#mechBreak{transition:opacity .9s}
-.lowered #mechWork{opacity:0}
-#mechBreak{opacity:0}
-.lowered #mechBreak{opacity:1}
-#arm{transform-box:fill-box;transform-origin:10% 92%}
-.working #arm{animation:wrench .32s ease-in-out infinite alternate}
-@keyframes wrench{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+#room.rest #carLift,#room[data-svc="batt"] #carLift,#room[data-svc="ac"] #carLift,#room[data-svc="wash"] #carLift,#room[data-svc="wiper"] #carLift{transform:translateY(140px)}
+#room:not(.rest)[data-svc="tire"] #carLift,#room:not(.rest)[data-svc="brake"] #carLift{transform:translateY(70px)}
+#hood{transform-origin:266px 44px;transition:transform 1.2s ease .8s}
+#room:not(.rest)[data-svc="batt"] #hood,#room:not(.rest)[data-svc="ac"] #hood{transform:rotate(-58deg)}
+#fWheel,#hub,#disc{transition:opacity .6s .6s}
+#hub,#disc{opacity:0}
+#room:not(.rest)[data-svc="tire"] #fWheel,#room:not(.rest)[data-svc="brake"] #fWheel{opacity:0}
+#room:not(.rest)[data-svc="tire"] #hub,#room:not(.rest)[data-svc="brake"] #disc{opacity:1}
+.pose{opacity:0;transition:opacity .9s}
+#room:not(.rest)[data-svc="oil"] .p-oil,#room:not(.rest)[data-svc="tire"] .p-tire,#room:not(.rest)[data-svc="brake"] .p-brake,#room:not(.rest)[data-svc="batt"] .p-batt,#room:not(.rest)[data-svc="ac"] .p-ac,#room:not(.rest)[data-svc="wash"] .p-wash,#room:not(.rest)[data-svc="wiper"] .p-wiper,#room:not(.rest)[data-svc="full"] .p-full,#room.rest .p-rest{opacity:1}
+.limb{stroke:#2d5584;stroke-width:9;stroke-linecap:round;fill:none}
+.skin{fill:#e8b48f}
+.anim{animation-play-state:paused!important}
+.working .anim{animation-play-state:running!important}
+.k-wrench{animation:wrench .32s ease-in-out infinite alternate}
+.k-gun{animation:gun .07s linear infinite}
+.k-wipe{animation:wipe .9s ease-in-out infinite alternate}
+.k-lift{animation:lift 1.8s ease-in-out infinite alternate}
+.k-sweep{animation:sweep 2.6s ease-in-out infinite alternate}
+.k-spot{animation:spot 2.6s ease-in-out infinite alternate}
+.k-needle{animation:needle 2.2s ease-in-out infinite alternate}
+.k-needle2{animation:needle 1.7s ease-in-out infinite alternate-reverse}
+.k-drip{animation:drip2 1.1s ease-in infinite}
+@keyframes wrench{from{transform:rotate(-9deg)}to{transform:rotate(11deg)}}
+@keyframes gun{0%{transform:translate(0,0)}25%{transform:translate(1px,-1px)}50%{transform:translate(-1px,1px)}75%{transform:translate(1px,1px)}100%{transform:translate(0,0)}}
+@keyframes wipe{from{transform:translateX(-12px)}to{transform:translateX(12px)}}
+@keyframes lift{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+@keyframes sweep{from{transform:rotate(-16deg)}to{transform:rotate(14deg)}}
+@keyframes spot{from{transform:translateX(-26px)}to{transform:translateX(22px)}}
+@keyframes needle{from{transform:rotate(-40deg)}to{transform:rotate(45deg)}}
+@keyframes drip2{0%{transform:translateY(0);opacity:1}100%{transform:translateY(14px);opacity:0}}
+/* calm things */
+.pet{cursor:pointer}
+#dogBody{transform-box:fill-box;transform-origin:center bottom;animation:breathe 4.4s ease-in-out infinite}
+#dogHead{transform-origin:-30px -4px;transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+#dogTail{transform-origin:48px -6px}
+.eyeO,.tongue{opacity:0;transition:opacity .3s}.eyeC,.zz{transition:opacity .3s}
+#dog.awake #dogHead,#room.rest #dogHead{transform:rotate(16deg)}
+#dog.awake .eyeO,#room.rest .eyeO,#dog.awake .tongue,#room.rest .tongue{opacity:1}
+#dog.awake .eyeC,#room.rest .eyeC,#dog.awake .zz,#room.rest .zz{opacity:0}
+#dog.awake #dogTail,#room.rest #dogTail{animation:wag .22s ease-in-out infinite alternate}
+@keyframes wag{from{transform:rotate(-14deg)}to{transform:rotate(16deg)}}
+.zz{animation:zz 3s ease-in-out infinite}
+@keyframes zz{0%{transform:translate(0,0)}50%{transform:translate(-4px,-6px)}100%{transform:translate(0,0)}}
+#cat.awake #catTail{animation:tail .5s ease-in-out 3 alternate}
+.heart{fill:#ff8fa3;font-size:22px;animation:heart 1.8s ease-out forwards;pointer-events:none}
+@keyframes heart{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:1;transform:translateY(-10px) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(1.1)}}
+.fish{transform-box:fill-box;transform-origin:center;animation:swim 18s ease-in-out infinite}
+@keyframes swim{0%{transform:translate(0,0) scaleX(1)}46%{transform:translate(92px,-5px) scaleX(1)}50%{transform:translate(94px,-3px) scaleX(-1)}96%{transform:translate(2px,4px) scaleX(-1)}100%{transform:translate(0,0) scaleX(1)}}
+.bubble{animation:bubble 3.9s linear infinite;opacity:0}
+@keyframes bubble{0%{transform:translateY(0);opacity:0}10%{opacity:.8}100%{transform:translateY(-70px);opacity:0}}
+.sway{transform-box:fill-box;transform-origin:50% 100%;animation:sway 5s ease-in-out infinite alternate}
+@keyframes sway{from{transform:skewX(-7deg)}to{transform:skewX(7deg)}}
+.calm .time{font-family:'Noto Sans KR',sans-serif;font-size:22px;font-weight:500;letter-spacing:.02em;padding:14px 0 10px;opacity:.92}
 #catBody{transform-box:fill-box;transform-origin:center bottom;animation:breathe 4s ease-in-out infinite}
 @keyframes breathe{50%{transform:scaleY(1.05)}}
 #catTail{transform-box:fill-box;transform-origin:0% 50%;animation:tail 6s ease-in-out infinite}
@@ -195,6 +241,8 @@ input{font:inherit}
     <symbol id="i-next" viewBox="0 0 24 24"><path d="M6 6v12l8.5-6z" fill="currentColor"/><rect x="16" y="6" width="2.4" height="12" rx="1" fill="currentColor"/></symbol>
     <symbol id="i-mix" viewBox="0 0 24 24"><path d="M5 4v16M12 4v16M19 4v16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="5" cy="14" r="2.4" fill="currentColor"/><circle cx="12" cy="8" r="2.4" fill="currentColor"/><circle cx="19" cy="15.5" r="2.4" fill="currentColor"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></symbol>
+    <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 4l16 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
     <symbol id="i-full2" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   </defs>
 </svg>
@@ -265,7 +313,7 @@ input{font:inherit}
     <linearGradient id="gOut" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e1822"/><stop offset=".7" stop-color="#1b2a38"/><stop offset="1" stop-color="#2a3a46"/></linearGradient>
     <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".07"/><stop offset=".5" stop-color="#fff" stop-opacity=".015"/><stop offset="1" stop-color="#9cc" stop-opacity=".05"/></linearGradient>
     <linearGradient id="gTable" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4130"/><stop offset=".08" stop-color="#3f2d20"/><stop offset="1" stop-color="#1c140e"/></linearGradient>
-    <linearGradient id="gPost" x1="0" x2="1"><stop offset="0" stop-color="#b48c1e"/><stop offset=".5" stop-color="#e2b93a"/><stop offset="1" stop-color="#9a7716"/></linearGradient>
+    <linearGradient id="gPost" x1="0" x2="1"><stop offset="0" stop-color="#5f6468"/><stop offset=".5" stop-color="#adb2b6"/><stop offset="1" stop-color="#5a5f63"/></linearGradient>
     <linearGradient id="gCar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7d989c"/><stop offset=".55" stop-color="#55706f"/><stop offset="1" stop-color="#344443"/></linearGradient>
     <radialGradient id="gLamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".55"/><stop offset=".4" stop-color="#f2a33a" stop-opacity=".16"/><stop offset="1" stop-color="#f2a33a" stop-opacity="0"/></radialGradient>
     <radialGradient id="gFluo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#dff0ff" stop-opacity=".35"/><stop offset="1" stop-color="#dff0ff" stop-opacity="0"/></radialGradient>
@@ -274,9 +322,16 @@ input{font:inherit}
     <radialGradient id="gTV" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#3fd0b0" stop-opacity=".22"/><stop offset="1" stop-color="#3fd0b0" stop-opacity="0"/></radialGradient>
     <filter id="fGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     <filter id="fSoft"><feGaussianBlur stdDeviation="2"/></filter>
-    <clipPath id="cDoor"><rect x="580" y="214" width="290" height="351"/></clipPath>
+    <clipPath id="cDoor"><rect x="590" y="206" width="290" height="359"/></clipPath>
     <clipPath id="cWin"><rect x="1312" y="160" width="236" height="330"/></clipPath>
-    <pattern id="pPeg" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="1.6" fill="#1a2025"/></pattern>
+    <pattern id="pRail" width="14" height="34" patternUnits="userSpaceOnUse"><rect x="6" width="2" height="34" fill="#1e2124"/></pattern>
+    <pattern id="pTile" width="20" height="11" patternUnits="userSpaceOnUse"><path d="M0 .5H20M.5 0V11" stroke="#575d62" stroke-width="1"/></pattern>
+    <linearGradient id="gBayWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ea29f"/><stop offset=".35" stop-color="#c5c8c3"/><stop offset="1" stop-color="#b3b6b1"/></linearGradient>
+    <linearGradient id="gWater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3fa7b8"/><stop offset="1" stop-color="#0f4a5c"/></linearGradient>
+    <radialGradient id="gTank" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#4fd0e0" stop-opacity=".22"/><stop offset="1" stop-color="#4fd0e0" stop-opacity="0"/></radialGradient>
+    <g id="mUp"><path d="M-22 22q0-10 10-12h24q10 2 10 12v50h-44z" fill="#2d5584"/><rect x="-22" y="44" width="44" height="6" fill="#f2a33a"/><circle cx="0" cy="-2" r="13" fill="#e8b48f"/><path d="M-14 -6q2-14 14-14t14 12z" fill="#1d1d1d"/><path d="M8 -8h12v4H6z" fill="#1d1d1d"/></g>
+    <g id="mLeg"><path d="M-14 70l-4 52h14l4-40 4 40h14l-4-52z" fill="#244266"/><rect x="-22" y="118" width="20" height="8" rx="3" fill="#111"/><rect x="2" y="118" width="20" height="8" rx="3" fill="#111"/></g>
+    <g id="mKnee"><path d="M-2 66L30 70L32 96L20 98L18 80L-4 82Z" fill="#244266"/><path d="M-20 66L-4 70L-2 96L-34 98L-34 90L-16 88Z" fill="#244266"/><rect x="18" y="94" width="20" height="8" rx="3" fill="#111"/><rect x="-44" y="90" width="12" height="10" rx="3" fill="#111"/></g>
   </defs>
 
   <!-- walls & floor -->
@@ -292,105 +347,159 @@ input{font:inherit}
   <ellipse cx="1110" cy="300" rx="380" ry="320" fill="url(#gLamp)"/>
   <ellipse cx="1440" cy="330" rx="300" ry="300" fill="url(#gLamp)" opacity=".8"/>
 
-  <!-- ============ SERVICE BAY (behind glass) ============ -->
+  <!-- ============ SERVICE BAY (behind glass) — modelled on SP Motors ============ -->
   <g id="bay">
-    <rect x="110" y="110" width="790" height="500" fill="url(#gBay)"/>
-    <!-- pegboard -->
-    <rect x="128" y="200" width="44" height="200" fill="#222a30"/><rect x="128" y="200" width="44" height="200" fill="url(#pPeg)"/>
-    <path d="M140 220v40M138 220h4M152 225l8 30M160 220v28" stroke="#7d8790" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="150" cy="300" r="10" fill="none" stroke="#7d8790" stroke-width="3"/>
-    <!-- bay sign -->
-    <text x="725" y="196" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-weight="900" font-size="15" letter-spacing="4" fill="#d9a21b" opacity=".85">BAY 01 · SP MOTORS</text>
-    <!-- outside through roller door -->
-    <rect x="580" y="214" width="290" height="351" fill="url(#gOut)"/>
+    <rect x="110" y="110" width="790" height="500" fill="url(#gBayWall)"/>
+    <rect x="110" y="110" width="790" height="16" fill="#8b8f8c"/>
+    <!-- mezzanine + railing -->
+    <rect x="110" y="134" width="452" height="34" fill="url(#pRail)"/>
+    <path d="M110 134H562" stroke="#1e2124" stroke-width="3"/>
+    <rect x="110" y="168" width="452" height="16" fill="#50565b"/>
+    <!-- tool wall -->
+    <rect x="114" y="300" width="60" height="265" fill="#3a4045"/>
+    <path d="M114 345h60M114 395h60M114 445h60M114 497h60" stroke="#1f2326" stroke-width="3"/>
+    <rect x="119" y="331" width="14" height="12" fill="#e2c23a"/><rect x="136" y="331" width="14" height="12" fill="#5aa64a"/><rect x="153" y="331" width="14" height="12" fill="#e2c23a"/>
+    <rect x="119" y="381" width="14" height="12" fill="#5aa64a"/><rect x="136" y="381" width="14" height="12" fill="#d9503a"/><rect x="153" y="381" width="14" height="12" fill="#5aa64a"/>
+    <rect x="119" y="431" width="22" height="12" fill="#c9b48a"/><rect x="146" y="431" width="22" height="12" fill="#c9b48a"/>
+    <rect x="121" y="476" width="18" height="20" fill="#e8e3d8"/><rect x="146" y="480" width="16" height="16" fill="#3f8f5a"/>
+    <!-- glass folding door to the street -->
+    <rect x="590" y="206" width="290" height="359" fill="url(#gOut)"/>
     <g clip-path="url(#cDoor)">
-      <!-- buildings -->
-      <path d="M580 400h50v-90h40v60h30v-120h60v100h40v-50h70v215H580z" fill="#0b131b"/>
-      <g fill="#ffcc77" opacity=".55"><rect x="690" y="300" width="7" height="9"/><rect x="706" y="300" width="7" height="9"/><rect x="706" y="330" width="7" height="9"/><rect x="644" y="330" width="6" height="8"/><rect x="830" y="380" width="7" height="9"/><rect x="845" y="395" width="7" height="9" opacity=".5"/></g>
-      <!-- street lamp -->
-      <path d="M800 565V300q0-14 -14-14h-18" stroke="#0a0f14" stroke-width="5" fill="none"/>
-      <rect x="756" y="282" width="20" height="7" rx="2" fill="#ffd28a"/>
-      <ellipse cx="766" cy="300" rx="70" ry="70" fill="url(#gStreet)"/>
-      <!-- wet road -->
-      <rect x="580" y="500" width="290" height="65" fill="#141e27"/>
-      <path d="M740 500l-14 65h40l-6-65z" fill="#ffc56b" opacity=".12"/>
-      <!-- passing car headlights -->
-      <g class="headlights" id="hl1"><ellipse cx="720" cy="505" rx="90" ry="22" fill="url(#gHead)"/><circle cx="700" cy="505" r="5" fill="#fffbe8"/><circle cx="742" cy="505" r="5" fill="#fffbe8"/><path d="M700 520l-10 45h60l-8-45z" fill="#fff0c0" opacity=".15"/></g>
+      <path d="M590 400h50v-90h40v60h30v-120h60v100h40v-50h70v215H590z" fill="#0b131b"/>
+      <g fill="#ffcc77" opacity=".55"><rect x="700" y="300" width="7" height="9"/><rect x="716" y="300" width="7" height="9"/><rect x="716" y="330" width="7" height="9"/><rect x="654" y="330" width="6" height="8"/><rect x="840" y="380" width="7" height="9"/><rect x="855" y="395" width="7" height="9" opacity=".5"/></g>
+      <path d="M810 565V300q0-14 -14-14h-18" stroke="#0a0f14" stroke-width="5" fill="none"/>
+      <rect x="766" y="282" width="20" height="7" rx="2" fill="#ffd28a"/>
+      <ellipse cx="776" cy="300" rx="70" ry="70" fill="url(#gStreet)"/>
+      <rect x="590" y="500" width="290" height="65" fill="#141e27"/>
+      <path d="M750 500l-14 65h40l-6-65z" fill="#ffc56b" opacity=".12"/>
+      <g class="headlights" id="hl1"><ellipse cx="730" cy="505" rx="90" ry="22" fill="url(#gHead)"/><circle cx="710" cy="505" r="5" fill="#fffbe8"/><circle cx="752" cy="505" r="5" fill="#fffbe8"/><path d="M710 520l-10 45h60l-8-45z" fill="#fff0c0" opacity=".15"/></g>
       <g class="rain" id="rainDoor"></g>
       <g id="splashDoor"></g>
     </g>
-    <!-- roller shutter (partially up) -->
-    <g>
-      <rect x="572" y="206" width="306" height="50" fill="#5d666d"/>
-      <path d="M572 214h306M572 222h306M572 230h306M572 238h306M572 246h306" stroke="#3f474d" stroke-width="2"/>
-      <rect x="572" y="252" width="306" height="6" fill="#3a4147"/>
-      <rect x="566" y="206" width="8" height="360" fill="#3a4147"/><rect x="876" y="206" width="8" height="360" fill="#3a4147"/>
+    <g fill="#16181a">
+      <rect x="586" y="202" width="298" height="8"/><rect x="586" y="238" width="298" height="5"/><rect x="586" y="557" width="298" height="8"/>
+      <rect x="586" y="202" width="6" height="363"/><rect x="632" y="238" width="5" height="319"/><rect x="678" y="238" width="5" height="319"/><rect x="724" y="238" width="5" height="319"/><rect x="770" y="238" width="5" height="319"/><rect x="816" y="238" width="5" height="319"/><rect x="878" y="202" width="6" height="363"/>
+      <rect x="762" y="380" width="3" height="40"/><rect x="779" y="380" width="3" height="40"/>
     </g>
+    <path d="M610 560L670 212M720 560L780 212" stroke="#fff" stroke-opacity=".05" stroke-width="18"/>
     <!-- fluorescent lights -->
-    <g class="flick"><rect x="200" y="128" width="220" height="10" rx="5" fill="#eaf4ff"/><ellipse cx="310" cy="160" rx="200" ry="80" fill="url(#gFluo)"/></g>
-    <g><rect x="560" y="128" width="220" height="10" rx="5" fill="#eaf4ff"/><ellipse cx="670" cy="160" rx="200" ry="80" fill="url(#gFluo)"/></g>
-    <!-- bay floor -->
-    <rect x="110" y="565" width="790" height="45" fill="#2b3237"/>
-    <path d="M110 565h790" stroke="#d9a21b" stroke-width="3" stroke-dasharray="22 14" opacity=".7"/>
-    <!-- tire stack -->
-    <g transform="translate(812 486)"><rect x="0" y="0" width="52" height="26" rx="10" fill="#111"/><rect x="0" y="27" width="52" height="26" rx="10" fill="#151515"/><rect x="0" y="54" width="52" height="26" rx="10" fill="#111"/><path d="M8 13h36M8 40h36M8 67h36" stroke="#2a2a2a" stroke-width="2" stroke-dasharray="4 3"/></g>
-    <!-- tool cart -->
-    <g transform="translate(724 470)"><rect x="0" y="0" width="70" height="80" rx="4" fill="#a8372a"/><rect x="0" y="0" width="70" height="8" fill="#c94b3b"/><path d="M6 24h58M6 44h58M6 64h58" stroke="#6d2018" stroke-width="2"/><rect x="28" y="16" width="14" height="3" rx="1.5" fill="#ddd"/><rect x="28" y="36" width="14" height="3" rx="1.5" fill="#ddd"/><rect x="28" y="56" width="14" height="3" rx="1.5" fill="#ddd"/><circle cx="10" cy="88" r="6" fill="#111"/><circle cx="60" cy="88" r="6" fill="#111"/><path d="M12 -2l14 -14h10" stroke="#9aa" stroke-width="3" fill="none"/></g>
-    <!-- lift posts -->
-    <rect x="178" y="215" width="20" height="350" fill="url(#gPost)"/><rect x="502" y="215" width="20" height="350" fill="url(#gPost)"/>
-    <rect x="172" y="555" width="32" height="10" fill="#7a5d10"/><rect x="496" y="555" width="32" height="10" fill="#7a5d10"/>
-    <path d="M182 240h12M182 280h12M182 320h12M182 360h12M182 400h12M182 440h12M182 480h12M182 520h12M506 240h12M506 280h12M506 320h12M506 360h12M506 400h12M506 440h12M506 480h12M506 520h12" stroke="#5e4a10" stroke-width="2"/>
-    <!-- mechanic working (under raised car) -->
-    <g id="mechWork" transform="translate(330 440)">
-      <!-- legs -->
-      <path d="M-14 70l-4 52h14l4-40 4 40h14l-4-52z" fill="#244266"/>
-      <rect x="-22" y="118" width="20" height="8" rx="3" fill="#111"/><rect x="2" y="118" width="20" height="8" rx="3" fill="#111"/>
-      <!-- torso -->
-      <path d="M-22 22q0-10 10-12h24q10 2 10 12v50h-44z" fill="#2d5584"/>
-      <rect x="-22" y="44" width="44" height="6" fill="#d9a21b" opacity=".85"/>
-      <!-- other arm -->
-      <path d="M-20 26l-12 30 6 4 14-26z" fill="#2d5584"/><circle cx="-28" cy="60" r="5" fill="#e8b48f"/>
-      <!-- working arm w/ wrench -->
-      <g id="arm"><path d="M14 22l10-44 9 2-8 46z" fill="#2d5584"/><circle cx="29" cy="-24" r="5.5" fill="#e8b48f"/><path d="M29 -26l18 -14" stroke="#c7cdd2" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="-41" r="5" fill="none" stroke="#c7cdd2" stroke-width="3"/></g>
-      <!-- head -->
-      <circle cx="0" cy="-2" r="13" fill="#e8b48f"/>
-      <path d="M-14 -6q2-14 14-14t14 12z" fill="#1d1d1d"/><path d="M8 -8h12v4H6z" fill="#1d1d1d"/>
+    <g class="flick"><rect x="170" y="114" width="200" height="8" rx="4" fill="#f4f9ff"/><ellipse cx="270" cy="150" rx="210" ry="70" fill="url(#gFluo)"/></g>
+    <g><rect x="600" y="114" width="200" height="8" rx="4" fill="#f4f9ff"/><ellipse cx="700" cy="150" rx="210" ry="70" fill="url(#gFluo)"/></g>
+    <!-- orange air hoses -->
+    <path d="M574 110V150c10 4 10 12 0 16c-10 4-10 12 0 16c10 4 10 12 0 16c-10 4-10 12 0 16c10 4 10 12 0 16V290" stroke="#e8661c" stroke-width="3" fill="none"/><rect x="571" y="290" width="6" height="12" fill="#c7cdd2"/>
+    <path d="M748 110V160c9 4 9 11 0 15c-9 4-9 11 0 15c9 4 9 11 0 15c-9 4-9 11 0 15V330" stroke="#e8661c" stroke-width="3" fill="none"/><rect x="745" y="330" width="6" height="12" fill="#c7cdd2"/>
+    <!-- floor: beige tiles + dark grid area -->
+    <rect x="110" y="565" width="790" height="45" fill="#d4cec2"/>
+    <rect x="160" y="565" width="400" height="45" fill="#3d4246"/>
+    <rect x="160" y="565" width="400" height="45" fill="url(#pTile)"/>
+    <!-- gray tool cart with red top -->
+    <g transform="translate(724 478)"><rect width="70" height="80" rx="4" fill="#8b9196"/><rect width="70" height="7" rx="2" fill="#b53a2e"/><path d="M5 24h60M5 42h60M5 60h60" stroke="#6a7075" stroke-width="2"/><rect x="26" y="14" width="18" height="3" rx="1.5" fill="#dfe3e6"/><rect x="26" y="32" width="18" height="3" rx="1.5" fill="#dfe3e6"/><rect x="26" y="50" width="18" height="3" rx="1.5" fill="#dfe3e6"/><circle cx="10" cy="84" r="5" fill="#111"/><circle cx="60" cy="84" r="5" fill="#111"/></g>
+    <!-- red tire changer -->
+    <g transform="translate(822 430)"><rect x="40" y="0" width="9" height="62" fill="#9aa0a4"/><rect x="14" y="0" width="34" height="7" fill="#9aa0a4"/><rect x="12" y="0" width="7" height="20" fill="#5c6166"/><rect x="0" y="60" width="54" height="75" rx="4" fill="#c8312a"/><ellipse cx="25" cy="60" rx="28" ry="5" fill="#3a3d40"/><rect x="6" y="80" width="22" height="4" fill="#8a1f1a"/></g>
+    <!-- two-post lift (gray) -->
+    <rect x="178" y="190" width="22" height="375" fill="url(#gPost)"/><rect x="500" y="190" width="22" height="375" fill="url(#gPost)"/>
+    <rect x="172" y="556" width="34" height="9" fill="#4b5055"/><rect x="494" y="556" width="34" height="9" fill="#4b5055"/>
+    <rect x="183" y="250" width="12" height="60" fill="#2f3337"/><rect x="505" y="250" width="12" height="60" fill="#2f3337"/>
+    <rect x="186" y="214" width="6" height="12" fill="#d9503a"/><rect x="508" y="214" width="6" height="12" fill="#d9503a"/>
+
+    <!-- ===== poses behind the car (under-car work) ===== -->
+    <g class="pose p-oil">
+      <g transform="translate(445 430)"><path d="M-22 0h44l-16 18h-12z" fill="#2b2b2b"/><rect x="-3" y="18" width="6" height="40" fill="#555"/><rect x="-14" y="58" width="28" height="60" rx="4" fill="#1f1f1f"/><rect x="-14" y="64" width="28" height="5" fill="#f2a33a"/><circle cx="-10" cy="124" r="5" fill="#111"/><circle cx="10" cy="124" r="5" fill="#111"/>
+        <ellipse class="anim k-drip" cx="0" cy="-14" rx="2" ry="3" fill="#6b3b10"/></g>
+      <g transform="translate(360 440)"><use href="#mLeg"/><use href="#mUp"/>
+        <path d="M-18 24L-28 60" class="limb"/><circle cx="-28" cy="62" r="5" class="skin"/>
+        <g transform="translate(16 22)"><g class="anim k-wrench"><path d="M0 0L14 -44" class="limb"/><circle cx="14" cy="-46" r="5.5" class="skin"/><path d="M14 -48L30 -62" stroke="#c7cdd2" stroke-width="5" stroke-linecap="round"/><circle cx="31" cy="-63" r="5" fill="none" stroke="#c7cdd2" stroke-width="3"/></g></g>
+      </g>
     </g>
-    <!-- mechanic on break (beside lowered car, sipping) -->
-    <g id="mechBreak" transform="translate(640 440)">
-      <path d="M-14 70l-4 52h14l4-40 4 40h14l-4-52z" fill="#244266"/>
-      <rect x="-22" y="118" width="20" height="8" rx="3" fill="#111"/><rect x="2" y="118" width="20" height="8" rx="3" fill="#111"/>
-      <path d="M-22 22q0-10 10-12h24q10 2 10 12v50h-44z" fill="#2d5584"/>
-      <rect x="-22" y="44" width="44" height="6" fill="#d9a21b" opacity=".85"/>
-      <path d="M-20 26l-6 40 8 1 6-36z" fill="#2d5584"/><circle cx="-22" cy="70" r="5" fill="#e8b48f"/>
-      <path d="M16 26l4 26-22 4-2-8 16-2-4-18z" fill="#2d5584"/><circle cx="-6" cy="50" r="5" fill="#e8b48f"/>
-      <path d="M-14 36h14l-2 16h-10z" fill="#f4efe6"/><rect x="-14" y="42" width="14" height="5" fill="#f2a33a"/>
-      <g class="steam" transform="translate(-7 30)"><path d="M0 0q-5 -8 0 -14t0 -14"/><path d="M4 2q-5 -8 0 -14t0 -14"/></g>
-      <circle cx="0" cy="-2" r="13" fill="#e8b48f"/>
-      <path d="M-14 -6q2-14 14-14t14 12z" fill="#1d1d1d"/><path d="M8 -8h12v4H6z" fill="#1d1d1d"/>
+    <g class="pose p-full">
+      <g transform="translate(320 440)"><use href="#mLeg"/><use href="#mUp"/>
+        <path d="M-18 24L-26 46" class="limb"/><circle cx="-26" cy="48" r="5" class="skin"/><rect x="-40" y="40" width="20" height="26" rx="2" fill="#f4efe6" transform="rotate(-10 -30 53)"/>
+        <g transform="translate(16 22)"><g class="anim k-sweep"><path d="M0 0L10 -36" class="limb"/><circle cx="10" cy="-38" r="5.5" class="skin"/><rect x="6" y="-58" width="8" height="18" rx="2" fill="#333"/><path d="M10 -58L-14 -76L34 -76Z" fill="#fff3c4" opacity=".55"/></g></g>
+      </g>
     </g>
-    <!-- car on lift -->
+
+    <!-- ===== car on lift ===== -->
     <g id="carLift">
       <g transform="translate(200 300)">
-        <!-- lift arms -->
-        <rect x="-22" y="92" width="80" height="8" fill="#8a6c14"/><rect x="242" y="92" width="80" height="8" fill="#8a6c14"/>
+        <rect x="-22" y="92" width="80" height="8" fill="#3c4044"/><rect x="242" y="92" width="80" height="8" fill="#3c4044"/>
         <rect x="40" y="86" width="16" height="8" fill="#222"/><rect x="244" y="86" width="16" height="8" fill="#222"/>
-        <!-- body -->
         <path d="M8 84V58q2-12 20-15l48-5 34-30q5-4 15-4h104q10 0 16 7l30 33q22 4 23 16v24q0 6-8 6H16q-8 0-8-6z" fill="url(#gCar)"/>
-        <!-- windows -->
         <path d="M86 40l30-27q3-3 9-3h46v30z" fill="#1d2a30"/><path d="M178 10h48q6 0 10 5l22 25h-80z" fill="#1d2a30"/>
         <path d="M96 30l12-11" stroke="#9fc4d0" stroke-width="3" opacity=".35" stroke-linecap="round"/>
-        <!-- details -->
         <path d="M174 10v74" stroke="#2f3d3d" stroke-width="2"/><path d="M120 50h14M196 50h14" stroke="#cfd8d6" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+        <path d="M254 39L242 25" stroke="#1d1f21" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M269 44Q290 47 298 58L298 61L269 49Z" fill="#141618"/><rect x="276" y="49" width="9" height="5" fill="#3a3d40"/>
+        <path id="hood" d="M266 42Q291 45 300 57L300 62L266 50Z" fill="#5d7877"/>
         <path d="M290 54h12v8h-12z" fill="#ffd28a"/><path d="M8 54h10v10H8z" fill="#c94b3b"/>
         <rect x="8" y="76" width="300" height="8" fill="#26302f"/>
-        <!-- SP sticker -->
         <circle cx="150" cy="66" r="7" fill="#f2a33a"/><text x="150" y="69" text-anchor="middle" font-size="7" font-weight="900" fill="#1a1209" font-family="sans-serif">SP</text>
-        <!-- wheels -->
         <g><circle cx="66" cy="88" r="26" fill="#111"/><circle cx="66" cy="88" r="14" fill="#8e979b"/><circle cx="66" cy="88" r="4" fill="#333"/><path d="M66 74v28M52 88h28" stroke="#5c6467" stroke-width="3"/></g>
-        <g><circle cx="244" cy="88" r="26" fill="#111"/><circle cx="244" cy="88" r="14" fill="#8e979b"/><circle cx="244" cy="88" r="4" fill="#333"/><path d="M244 74v28M230 88h28" stroke="#5c6467" stroke-width="3"/></g>
-        <!-- underbody / exhaust -->
+        <g id="hub"><circle cx="244" cy="88" r="13" fill="#7d858a"/><circle cx="244" cy="88" r="5" fill="#4a5055"/><g fill="#d0d4d7"><circle cx="244" cy="80" r="1.8"/><circle cx="251.6" cy="85.5" r="1.8"/><circle cx="248.7" cy="94.5" r="1.8"/><circle cx="239.3" cy="94.5" r="1.8"/><circle cx="236.4" cy="85.5" r="1.8"/></g></g>
+        <g id="disc"><circle cx="244" cy="88" r="20" fill="#a9afb3"/><circle cx="244" cy="88" r="15" fill="none" stroke="#868d92" stroke-width="2" stroke-dasharray="3 3"/><circle cx="244" cy="88" r="7" fill="#5c6166"/><path d="M256 70a22 22 0 0 1 10 18h-8a14 14 0 0 0-6-12z" fill="#c8312a"/></g>
+        <g id="fWheel"><circle cx="244" cy="88" r="26" fill="#111"/><circle cx="244" cy="88" r="14" fill="#8e979b"/><circle cx="244" cy="88" r="4" fill="#333"/><path d="M244 74v28M230 88h28" stroke="#5c6467" stroke-width="3"/></g>
         <path d="M100 96h110" stroke="#1a1a1a" stroke-width="6" stroke-linecap="round"/><path d="M20 100h40" stroke="#2a2a2a" stroke-width="4"/>
+      </g>
+    </g>
+
+    <!-- ===== poses in front of the car ===== -->
+    <g class="pose p-full"><ellipse class="anim k-spot" cx="350" cy="397" rx="34" ry="6" fill="#fff3c4" opacity=".55"/></g>
+    <g class="pose p-tire">
+      <g transform="translate(546 541)"><circle r="24" fill="#141414"/><circle r="12" fill="#8e979b"/><circle r="3" fill="#333"/></g>
+      <g transform="translate(372 440)"><use href="#mLeg"/><use href="#mUp"/>
+        <g class="anim k-gun">
+          <path d="M-14 26L40 34" class="limb"/><circle cx="42" cy="34" r="5" class="skin"/>
+          <path d="M16 22L34 18" class="limb"/><circle cx="36" cy="18" r="5" class="skin"/>
+          <rect x="32" y="10" width="28" height="12" rx="3" fill="#2b2f33"/><rect x="40" y="20" width="8" height="16" rx="2" fill="#2b2f33"/><rect x="58" y="13" width="14" height="6" fill="#9aa0a4"/><rect x="34" y="12" width="10" height="3" fill="#d9503a"/>
+        </g>
+      </g>
+    </g>
+    <g class="pose p-brake">
+      <ellipse cx="290" cy="560" rx="30" ry="7" fill="#151515"/><ellipse cx="290" cy="558" rx="13" ry="3" fill="#7d858a"/>
+      <g transform="translate(398 463)"><use href="#mKnee"/><use href="#mUp"/>
+        <path d="M-16 26L6 54" class="limb"/><circle cx="8" cy="56" r="5" class="skin"/>
+        <g transform="translate(16 22)"><g class="anim k-wrench"><path d="M0 0L22 -18" class="limb"/><circle cx="24" cy="-20" r="5.5" class="skin"/><path d="M24 -22L30 -32" stroke="#c7cdd2" stroke-width="4" stroke-linecap="round"/></g></g>
+      </g>
+    </g>
+    <g class="pose p-batt">
+      <g transform="translate(536 440) scale(-1 1)"><use href="#mLeg"/><g transform="rotate(22 0 70)"><use href="#mUp"/>
+        <g class="anim k-lift"><path d="M16 22L36 44" class="limb"/><path d="M-14 26L30 50" class="limb"/><rect x="32" y="38" width="26" height="17" rx="2" fill="#1d1f21"/><rect x="36" y="35" width="5" height="4" fill="#d9503a"/><rect x="49" y="35" width="5" height="4" fill="#666"/><circle cx="36" cy="46" r="5" class="skin"/><circle cx="32" cy="52" r="5" class="skin"/></g></g>
+      </g>
+    </g>
+    <g class="pose p-ac">
+      <g transform="translate(545 440) scale(-1 1)"><use href="#mLeg"/>
+        <path d="M22 40C30 90 50 80 62 52" stroke="#2f6fd6" stroke-width="3" fill="none"/><path d="M36 40C44 96 60 86 66 54" stroke="#d9503a" stroke-width="3" fill="none"/><path d="M29 40C30 90 20 110 10 108" stroke="#e2c23a" stroke-width="3" fill="none"/><rect x="2" y="104" width="14" height="22" rx="3" fill="#7fb2d9"/>
+        <use href="#mUp"/>
+        <path d="M-14 26L18 36" class="limb"/><path d="M16 22L34 34" class="limb"/>
+        <rect x="16" y="30" width="26" height="8" rx="2" fill="#9aa0a4"/>
+        <circle cx="22" cy="26" r="7" fill="#fff" stroke="#2f6fd6" stroke-width="3"/><circle cx="36" cy="26" r="7" fill="#fff" stroke="#d9503a" stroke-width="3"/>
+        <g transform="translate(22 26)"><path class="anim k-needle" d="M0 0V-5" stroke="#111" stroke-width="1.6"/></g>
+        <g transform="translate(36 26)"><path class="anim k-needle2" d="M0 0V-5" stroke="#111" stroke-width="1.6"/></g>
+        <circle cx="18" cy="36" r="5" class="skin"/><circle cx="34" cy="35" r="5" class="skin"/>
+      </g>
+    </g>
+    <g class="pose p-wash">
+      <g transform="translate(128 515)"><rect width="34" height="50" rx="6" fill="#9aa1a6"/><rect y="-6" width="34" height="10" rx="4" fill="#3a3d40"/><circle cx="6" cy="52" r="4" fill="#111"/><circle cx="28" cy="52" r="4" fill="#111"/></g>
+      <path d="M148 511C170 460 230 500 272 488" stroke="#2b2b2b" stroke-width="4" fill="none"/>
+      <g transform="translate(300 440)"><use href="#mLeg"/><use href="#mUp"/>
+        <path d="M-16 26L-26 46" class="limb"/><circle cx="-28" cy="47" r="5" class="skin"/>
+        <g class="anim k-wipe"><path d="M16 22L40 24" class="limb"/><circle cx="42" cy="24" r="5" class="skin"/><rect x="40" y="16" width="16" height="14" rx="3" fill="#e2c23a"/></g>
+      </g>
+    </g>
+    <g class="pose p-wiper">
+      <g transform="translate(484 440) scale(-1 1)"><use href="#mLeg"/><use href="#mUp"/>
+        <path d="M-14 26L6 48" class="limb"/><circle cx="7" cy="50" r="5" class="skin"/><rect x="0" y="50" width="20" height="5" rx="1" fill="#222"/>
+        <g transform="translate(16 22)"><g class="anim k-wrench"><path d="M0 0L20 4" class="limb"/><circle cx="22" cy="4" r="5" class="skin"/><path d="M20 -8L28 18" stroke="#1d1f21" stroke-width="3" stroke-linecap="round"/></g></g>
+      </g>
+    </g>
+    <!-- coffee break (rest) -->
+    <g class="pose p-rest">
+      <g transform="translate(640 440)"><use href="#mLeg"/>
+        <path d="M-22 22q0-10 10-12h24q10 2 10 12v50h-44z" fill="#2d5584"/><rect x="-22" y="44" width="44" height="6" fill="#f2a33a"/>
+        <path d="M-18 26L-24 64" class="limb"/><circle cx="-24" cy="68" r="5" class="skin"/>
+        <path d="M16 26L18 50L-2 52" class="limb"/><circle cx="-6" cy="50" r="5" class="skin"/>
+        <path d="M-14 36h14l-2 16h-10z" fill="#f4efe6"/><rect x="-14" y="42" width="14" height="5" fill="#f2a33a"/>
+        <g class="steam" transform="translate(-7 30)"><path d="M0 0q-5 -8 0 -14t0 -14"/><path d="M4 2q-5 -8 0 -14t0 -14"/></g>
+        <circle cx="0" cy="-2" r="13" fill="#e8b48f"/><path d="M-14 -6q2-14 14-14t14 12z" fill="#1d1d1d"/><path d="M8 -8h12v4H6z" fill="#1d1d1d"/>
       </g>
     </g>
   </g>
@@ -398,7 +507,7 @@ input{font:inherit}
   <rect x="110" y="110" width="790" height="500" fill="url(#gGlass)"/>
   <path d="M160 600L330 110M200 600L370 110M640 600L740 110" stroke="#fff" stroke-opacity=".035" stroke-width="26"/>
   <rect x="110" y="110" width="790" height="500" fill="none" stroke="#2a2723" stroke-width="16"/>
-  <rect x="533" y="110" width="12" height="500" fill="#2a2723"/>
+  <rect x="572" y="110" width="12" height="500" fill="#2a2723"/>
   <rect x="96" y="604" width="818" height="12" fill="#35302a"/>
 
   <!-- ============ WAITING ROOM (right) ============ -->
@@ -411,7 +520,7 @@ input{font:inherit}
   <g class="neon" filter="url(#fGlow)">
     <text x="1120" y="168" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-weight="900" font-size="46" letter-spacing="3" fill="none" stroke="#ffb64a" stroke-width="2.4">SP MOTORS</text>
   </g>
-  <text x="1120" y="194" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" letter-spacing="6" fill="#8d7a5c">SINCE 1996 · SEONGSU</text>
+  <text x="1120" y="194" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" letter-spacing="6" fill="#8d7a5c">SERVICE · LOUNGE</text>
 
   <!-- price board -->
   <g transform="translate(922 230)">
@@ -452,15 +561,22 @@ input{font:inherit}
   <path d="M1430 160v330M1312 325h236" stroke="#2a2520" stroke-width="8"/>
   <rect x="1296" y="498" width="268" height="10" fill="#3a332b"/>
 
-  <!-- wall clock -->
-  <g transform="translate(1226 452)">
-    <circle r="40" fill="#efe7d6" stroke="#2a2420" stroke-width="5"/>
-    <g stroke="#1b1814" stroke-width="2.4" stroke-linecap="round"><path d="M0-32v6M0 26v6M-32 0h6M26 0h6"/></g>
-    <text y="-12" text-anchor="middle" font-size="7" font-weight="900" fill="#1b1814" font-family="sans-serif">SP</text>
-    <path id="hH" d="M0 4V-18" stroke="#1b1814" stroke-width="4" stroke-linecap="round"/>
-    <path id="hM" d="M0 5V-27" stroke="#1b1814" stroke-width="2.6" stroke-linecap="round"/>
-    <path id="hS" d="M0 8V-30" stroke="#d9503a" stroke-width="1.2" stroke-linecap="round"/>
-    <circle r="3" fill="#1b1814"/>
+  <!-- aquarium (calm) -->
+  <g id="tank" transform="translate(1140 388)">
+    <ellipse cx="75" cy="48" rx="130" ry="90" fill="url(#gTank)"/>
+    <rect x="-8" y="96" width="166" height="7" rx="2" fill="#3a2a1d"/><path d="M10 103l6 14M140 103l-6 14" stroke="#2a1e15" stroke-width="4"/>
+    <rect x="0" y="0" width="150" height="96" rx="3" fill="#0d2f3a" stroke="#2a2420" stroke-width="5"/>
+    <rect x="3" y="12" width="144" height="81" fill="url(#gWater)"/>
+    <path d="M3 84q20-6 40 0t40 0t40 0t24-2V93H3Z" fill="#c9b48a"/>
+    <path d="M20 66q8 6 16 0" stroke="#6f6a60" stroke-width="7" stroke-linecap="round" fill="none" transform="translate(84 18)"/>
+    <path class="sway" d="M20 88q-6-20 2-40q6-12-2-22" stroke="#3f8f5a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path class="sway" style="animation-delay:-2s" d="M30 88q6-16-2-30" stroke="#5aa64a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <path class="sway" style="animation-delay:-1s" d="M128 88q-6-18 2-36q5-10 -2-18" stroke="#3f8f5a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <g class="fish" style="animation-duration:19s"><path d="M18 40q10-7 20 0q-10 7-20 0zM18 40l-6-5v10z" fill="#f2a33a"/><circle cx="33" cy="39" r="1.2" fill="#222"/></g>
+    <g class="fish" style="animation-duration:24s;animation-delay:-9s"><path d="M40 60q8-5 16 0q-8 5-16 0zM40 60l-5-4v8z" fill="#ff8f6b"/><circle cx="52" cy="59" r="1" fill="#222"/></g>
+    <g class="fish" style="animation-duration:16s;animation-delay:-5s"><path d="M28 28q7-4 13 0q-6 4-13 0zM28 28l-4-3v6z" fill="#7fe0d0"/></g>
+    <circle class="bubble" cx="118" cy="84" r="2" fill="#dff"/><circle class="bubble" style="animation-delay:-1.3s" cx="121" cy="84" r="1.4" fill="#dff"/><circle class="bubble" style="animation-delay:-2.6s" cx="116" cy="84" r="1.8" fill="#dff"/>
+    <rect x="3" y="3" width="144" height="9" fill="#1a1d1f"/><rect x="20" y="9" width="110" height="3" fill="#cfefff" opacity=".7"/>
   </g>
 
   <!-- coffee vending machine -->
@@ -489,7 +605,7 @@ input{font:inherit}
     <!-- cushion -->
     <rect x="50" y="20" width="70" height="52" rx="14" fill="#c98f4a" transform="rotate(-8 85 46)"/>
     <!-- cat -->
-    <g transform="translate(300 26)">
+    <g id="cat" class="pet" transform="translate(300 26)">
       <g id="catBody"><ellipse cx="0" cy="32" rx="44" ry="22" fill="#d9c3a2"/><path d="M-30 30q8-14 22-8" stroke="#b49a76" stroke-width="3" fill="none"/><path d="M6 20q10 -6 20 0" stroke="#b49a76" stroke-width="3" fill="none"/></g>
       <path id="catTail" d="M40 40q22 2 14 18q-8 12 -30 6" fill="none" stroke="#d9c3a2" stroke-width="9" stroke-linecap="round"/>
       <circle cx="-34" cy="28" r="17" fill="#d9c3a2"/>
@@ -498,6 +614,23 @@ input{font:inherit}
       <circle cx="-34" cy="34" r="1.6" fill="#b06a5a"/>
       <text x="-60" y="-2" font-family="sans-serif" font-size="12" fill="#a59d91" class="zzz" opacity=".7">z</text>
     </g>
+  </g>
+
+  <!-- dog on cushion (calm, tap to pet) -->
+  <g id="dog" class="pet" transform="translate(1300 702) scale(1.2)">
+    <ellipse cx="0" cy="10" rx="80" ry="15" fill="#6e4231"/><ellipse cx="0" cy="5" rx="66" ry="10" fill="#b98a62"/>
+    <g id="dogBody"><ellipse cx="6" cy="-6" rx="46" ry="19" fill="#d9a066"/><ellipse cx="14" cy="0" rx="30" ry="10" fill="#e9bf8c"/></g>
+    <path id="dogTail" d="M48 -6q18-4 22 8" stroke="#d9a066" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-52" cy="10" rx="13" ry="5" fill="#e9bf8c"/><ellipse cx="-38" cy="11" rx="11" ry="4.5" fill="#e9bf8c"/>
+    <g id="dogHead">
+      <ellipse cx="-44" cy="-4" rx="18" ry="14" fill="#d9a066"/>
+      <ellipse cx="-58" cy="1" rx="10" ry="7" fill="#e9bf8c"/><ellipse cx="-66" cy="-1" rx="3.4" ry="2.8" fill="#2a1a12"/>
+      <path d="M-36 -15q11 2 9 21q-9-2-13-12z" fill="#a8693c"/>
+      <path class="eyeC" d="M-52 -8q4 3 8 0" stroke="#2a1a12" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle class="eyeO" cx="-48" cy="-8" r="2.6" fill="#2a1a12"/>
+      <path class="tongue" d="M-60 6q2 6 6 0z" fill="#e06a7a"/>
+    </g>
+    <text class="zz" x="-70" y="-24" font-family="sans-serif" font-size="12" fill="#a59d91">z</text>
   </g>
 
   <!-- plant (left) -->
@@ -514,7 +647,7 @@ input{font:inherit}
   <!-- car key with tag -->
   <g transform="translate(410 834) rotate(12)"><circle r="10" fill="none" stroke="#bfc3c6" stroke-width="3"/><rect x="8" y="-9" width="38" height="18" rx="7" fill="#1c1c1c"/><circle cx="20" cy="0" r="3" fill="#444"/><path d="M-8 6l-30 14" stroke="#bfc3c6" stroke-width="2"/><rect x="-74" y="14" width="40" height="22" rx="3" fill="#f2a33a" transform="rotate(-20 -54 25)"/><text x="-56" y="34" text-anchor="middle" font-size="9" font-weight="900" fill="#1a1209" font-family="JetBrains Mono,monospace" transform="rotate(-20 -54 25)" id="keyTag">0427</text></g>
   <!-- paper cup coffee -->
-  <g transform="translate(1290 760)">
+  <g transform="translate(1100 760)">
     <ellipse cx="0" cy="62" rx="40" ry="8" fill="#000" opacity=".35"/>
     <path d="M-28 0h56l-7 60h-42z" fill="#f4efe6"/>
     <path d="M-26 16h52l-3 26h-46z" fill="#f2a33a"/>
@@ -542,7 +675,8 @@ input{font:inherit}
     </div>
     <div class="p-top">
       <span class="mode"><i></i><span id="modeTxt">작업 중 · 1회차</span></span>
-      <button class="ctl" id="endBtn" aria-label="나가기" style="width:28px;height:28px"><svg style="width:14px;height:14px"><use href="#i-x"/></svg></button>
+      <span style="display:flex;gap:2px"><button class="ctl" id="calmBtn" aria-label="남은 시간 가리기" title="남은 시간 가리기" style="width:28px;height:28px"><svg style="width:15px;height:15px"><use href="#i-eye" id="calmIcon"/></svg></button>
+      <button class="ctl" id="endBtn" aria-label="나가기" style="width:28px;height:28px"><svg style="width:14px;height:14px"><use href="#i-x"/></svg></button></span>
     </div>
     <div class="time" id="time">25:00</div>
     <div class="prog"><i id="progBar"></i></div>
@@ -572,6 +706,8 @@ const SERVICES=[
   {id:'full',name:'종합 점검',min:50,icon:'i-full'}
 ];
 const MECHS=['박 반장','김 실장','이 기사','최 팀장','정 반장'];
+const START_MSG={oil:'차를 리프트에 올리고 엔진오일을 빼고 있어요',tire:'차를 띄우고 휠 너트를 풀고 있어요',brake:'바퀴를 떼고 브레이크 패드를 보고 있어요',batt:'보닛을 열고 배터리를 갈고 있어요',ac:'보닛을 열고 에어컨 가스 압력을 재고 있어요',wash:'실내를 청소기로 정리하고 있어요',wiper:'와이퍼 블레이드를 갈아 끼우고 있어요',full:'차를 띄우고 하부를 꼼꼼히 살피고 있어요'};
+const SHOP_W={oil:[.6,.1,.2,.1,0],tire:[.15,.65,.1,.1,0],brake:[.3,.4,.2,.1,0],batt:[.45,.05,.4,.1,0],ac:[.2,0,.3,.5,0],wash:[0,0,.1,.2,.7],wiper:[.3,0,.6,.1,0],full:[.4,.2,.3,.1,0]};
 const TRACKS=[
   {title:'Waiting Room Waltz',file:'music/Waiting_Room_Waltz.mp3'},
   {title:'Midnight Oil Change',file:'music/Midnight_Oil_Change.mp3'},
@@ -584,7 +720,7 @@ const $=s=>document.querySelector(s);
 const store={get(k,d){try{const v=localStorage.getItem('spm_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('spm_'+k,JSON.stringify(v))}catch(e){}}};
 const S={svc:store.get('svc',0),focus:25,rest:store.get('rest',5),plate:store.get('plate',''),mech:MECHS[Math.floor(Math.random()*MECHS.length)],
   muted:store.get('muted',false),vol:Object.assign({music:70,rain:55,shop:35,car:40,heater:20},store.get('vol',{})),
-  mode:'focus',session:1,total:0,endAt:0,remain:0,running:false,track:0,woNo:String(Math.floor(1000+Math.random()*8999))};
+  calm:store.get('calm',false),mode:'focus',session:1,total:0,endAt:0,remain:0,running:false,track:0,woNo:String(Math.floor(1000+Math.random()*8999))};
 S.focus=store.get('focus',SERVICES[S.svc].min);
 
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id))}
@@ -640,32 +776,32 @@ function rain(gid,x0,x1,y0,y1,n){const g=document.getElementById(gid);
     l.style.animationDuration=(.45+Math.random()*.35)+'s';l.style.animationDelay=(-Math.random()*1)+'s';l.style.opacity=.35+Math.random()*.6;g.appendChild(l)}}
 function splashes(gid,x0,x1,y0,y1,n){const g=document.getElementById(gid);for(let i=0;i<n;i++){const e=document.createElementNS(NS,'ellipse');e.setAttribute('cx',x0+Math.random()*(x1-x0));e.setAttribute('cy',y0+Math.random()*(y1-y0));e.setAttribute('rx',6);e.setAttribute('ry',2);e.setAttribute('class','splash');e.style.animationDelay=(-Math.random())+'s';e.style.animationDuration=(.7+Math.random()*.6)+'s';g.appendChild(e)}}
 function drops(){const g=document.getElementById('drops');for(let i=0;i<34;i++){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',1316+Math.random()*228);c.setAttribute('cy',164+Math.random()*320);c.setAttribute('r',1+Math.random()*2.6);c.setAttribute('class','drop');if(Math.random()<.25){c.classList.add('drip');c.style.animationDuration=(6+Math.random()*10)+'s';c.style.animationDelay=(-Math.random()*10)+'s'}g.appendChild(c)}}
-rain('rainDoor',580,870,214,565,110);rain('rainWin',1312,1548,160,490,80);splashes('splashDoor',585,865,505,560,14);drops();
-function fitView(){const r=innerWidth/innerHeight;const svg=$('#room');const w=Math.min(1600,900*r);const fc=r<.8?520:640;const l=Math.max(0,Math.min(1600-w,fc-w/2));svg.setAttribute('viewBox',w>=1600?'0 0 1600 900':`${l.toFixed(0)} 0 ${w.toFixed(0)} 900`)}
+rain('rainDoor',590,880,206,565,110);rain('rainWin',1312,1548,160,490,80);splashes('splashDoor',595,875,505,560,14);drops();
+function fitView(){const r=innerWidth/innerHeight;const svg=$('#room');const w=Math.min(1600,900*r);const fc=r<.8?520:(w>1200?800:640);const l=Math.max(0,Math.min(1600-w,fc-w/2));svg.setAttribute('viewBox',w>=1600?'0 0 1600 900':`${l.toFixed(0)} 0 ${w.toFixed(0)} 900`)}
 addEventListener('resize',fitView);fitView();
-function clock(){const d=new Date();const h=d.getHours()%12,m=d.getMinutes(),s=d.getSeconds();
-  $('#hH').setAttribute('transform',`rotate(${h*30+m*.5})`);$('#hM').setAttribute('transform',`rotate(${m*6+s*.1})`);$('#hS').setAttribute('transform',`rotate(${s*6})`)}
-setInterval(clock,1000);clock();
+
 
 /* ================= room / timer ================= */
 const room=$('#room'),panel=$('#panel');
 function enterRoom(){
   const s=SERVICES[S.svc];
   $('#tvPlate').textContent=S.plate;$('#tvJob').textContent=`${s.name} · ${S.mech}`;$('#keyTag').textContent=S.woNo;
+  room.dataset.svc=s.id;
   show('scene');S.session=1;startPhase('focus');
-  startMusic();toast(`${S.mech}님이 차를 리프트에 올렸어요. 작업 시작!`);
+  startMusic();toast(`${S.mech}님이 ${START_MSG[s.id]}`);
 }
 function startPhase(mode){
   S.mode=mode;S.total=(mode==='focus'?S.focus:S.rest)*60;S.endAt=Date.now()+S.total*1000;S.running=true;
-  room.classList.toggle('lowered',mode==='rest');
+  room.classList.toggle('rest',mode==='rest');
   panel.classList.toggle('rest',mode==='rest');panel.classList.remove('paused');setPlayIcon();render();
 }
 function remaining(){return S.running?Math.max(0,(S.endAt-Date.now())/1000):S.remain}
 function render(){
-  const r=remaining();const m=Math.floor(Math.ceil(r)/60),s=Math.ceil(r)%60;const t=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  $('#time').textContent=t;
-  const p=S.total?1-r/S.total:0;$('#progBar').style.width=(p*100)+'%';
   const isF=S.mode==='focus';
+  const r=remaining();const m=Math.floor(Math.ceil(r)/60),s=Math.ceil(r)%60;const t=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  $('#time').textContent=S.calm?(isF?'천천히, 지금 할 일 하나만':'잠깐 쉬어가요'):t;
+  panel.classList.toggle('calm',!!S.calm);
+  const p=S.total?1-r/S.total:0;$('#progBar').style.width=(p*100)+'%';
   $('#modeTxt').textContent=(S.running?(isF?'작업 중':'커피 타임'):'일시 정지')+` · ${S.session}회차`;
   $('#tvSess').textContent=S.session+'회차';
   $('#tvStatus').textContent=isF?(S.running?'작업 중':'작업 대기'):'정비사 휴식 중';
@@ -674,7 +810,7 @@ function render(){
   $('#tvBar').setAttribute('width',216*p);$('#tvPct').textContent=Math.floor(p*100)+'%';
   room.classList.toggle('working',isF&&S.running);
   if(TRACKS.length&&audio.duration){const f=x=>`${Math.floor(x/60)}:${String(Math.floor(x%60)).padStart(2,'0')}`;$('#radioTxt').textContent=`SP 라디오 · ${f(audio.currentTime)} / ${f(audio.duration)}`}
-  if($('#scene').classList.contains('on'))document.title=`${t} · ${isF?'작업 중':'휴식'} — SP Motors`;
+  if($('#scene').classList.contains('on'))document.title=`${S.calm?'':t+' · '}${isF?'작업 중':'휴식'} — SP Motors`;
 }
 setInterval(()=>{if(!$('#scene').classList.contains('on'))return;if(S.running&&remaining()<=0)phaseDone();render()},250);
 function phaseDone(){
@@ -692,7 +828,7 @@ $('#nextBtn').onclick=()=>{nextTrack()};
 $('#mixBtn').onclick=()=>{$('#mixer').classList.toggle('on');$('#mixBtn').classList.toggle('on')};
 $('#endBtn').onclick=()=>$('#confirm').classList.add('on');
 $('#cNo').onclick=()=>$('#confirm').classList.remove('on');
-$('#cYes').onclick=()=>{$('#confirm').classList.remove('on');S.running=false;audio.pause();suspendAmb(true);document.title='SP Motors 대기실 — 비 오는 날의 집중 공간';room.classList.remove('lowered');show('kiosk')};
+$('#cYes').onclick=()=>{$('#confirm').classList.remove('on');S.running=false;audio.pause();suspendAmb(true);document.title='SP Motors 대기실 — 비 오는 날의 집중 공간';room.classList.remove('rest');show('kiosk')};
 $('#fsBtn').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}};
 document.addEventListener('keydown',e=>{if(!$('#scene').classList.contains('on')||e.target.tagName==='INPUT')return;if(e.code==='Space'){e.preventDefault();$('#playBtn').click()}if(e.key==='n')nextTrack()});
 let toastT;function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),4200)}
@@ -741,7 +877,7 @@ function burst(dest,{at=0,dur=.03,hp=0,lp=0,bp=0,q=1,gain=.2,pan=0,attack=.002})
 function tone(dest,{f,at=0,dur=1,gain=.1,type='sine',pan=0}){const C=A.ctx,t=C.currentTime+at;const o=C.createOscillator();o.type=type;o.frequency.value=f;const g=C.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(gain,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+dur);let out=g;if(C.createStereoPanner){const p=C.createStereoPanner();p.pan.value=pan;g.connect(p);out=p}o.connect(g);out.connect(dest);o.start(t);o.stop(t+dur+.05)}
 function patter(){if(!A.ctx)return;if(!A.paused&&A.ctx.state==='running'){const n=2+Math.floor(Math.random()*4);for(let i=0;i<n;i++)burst(A.bus.rain,{at:Math.random()*.08,dur:.01+Math.random()*.03,hp:2500,bp:3000+Math.random()*4000,q:3,gain:.05+Math.random()*.12,pan:Math.random()*1.6-.8})}setTimeout(patter,40+Math.random()*70)}
 // workshop sounds
-function ratchet(){const n=6+Math.floor(Math.random()*9),pan=-.5+Math.random()*.4;room.classList.add('working');for(let i=0;i<n;i++){burst(A.bus.shop,{at:i*.055,dur:.025,hp:2200,gain:.32,pan});tone(A.bus.shop,{f:3100+Math.random()*300,at:i*.055,dur:.03,gain:.03,pan})}}
+function ratchet(){const n=6+Math.floor(Math.random()*9),pan=-.5+Math.random()*.4;for(let i=0;i<n;i++){burst(A.bus.shop,{at:i*.055,dur:.025,hp:2200,gain:.32,pan});tone(A.bus.shop,{f:3100+Math.random()*300,at:i*.055,dur:.03,gain:.03,pan})}}
 function impact(){const C=A.ctx,t=C.currentTime,d=.5+Math.random()*.8,pan=-.4;const o=C.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(70,t);o.frequency.linearRampToValueAtTime(52,t+d);
   const lfo=C.createOscillator();lfo.type='square';lfo.frequency.value=26;const lg=C.createGain();lg.gain.value=.5;const am=C.createGain();am.gain.value=.5;lfo.connect(lg).connect(am.gain);
   const f=C.createBiquadFilter();f.type='lowpass';f.frequency.value=900;const g=C.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+.03);g.gain.setValueAtTime(.16,t+d-.05);g.gain.linearRampToValueAtTime(0,t+d);
@@ -750,7 +886,9 @@ function impact(){const C=A.ctx,t=C.currentTime,d=.5+Math.random()*.8,pan=-.4;co
   burst(A.bus.shop,{dur:d,bp:1400,q:2,gain:.12,pan,attack:.03})}
 function clank(){const pan=Math.random()*.8-.6,b=400+Math.random()*300;[1,2.27,3.8,5.4].forEach((m,i)=>tone(A.bus.shop,{f:b*m,dur:.6+Math.random()*.6-i*.08,gain:.07/(i+1),pan}))}
 function airgun(){burst(A.bus.shop,{dur:.35+Math.random()*.4,hp:2500,lp:9000,gain:.12,pan:-.6,attack:.02})}
-function shopLoop(){if(A.ctx&&!A.paused&&S.mode==='focus'&&A.ctx.state==='running'){const r=Math.random();if(r<.45)ratchet();else if(r<.68){impact();if(Math.random()<.5)setTimeout(()=>A.ctx&&impact(),900+Math.random()*700)}else if(r<.9)clank();else airgun()}setTimeout(shopLoop,3500+Math.random()*7000)}
+function vacuum(){burst(A.bus.shop,{dur:1.4+Math.random()*1.2,bp:900,q:.7,gain:.13,pan:-.7,attack:.25});burst(A.bus.shop,{dur:1.6,lp:300,gain:.1,pan:-.7,attack:.25})}
+function shopLoop(){if(A.ctx&&!A.paused&&S.mode==='focus'&&S.running&&A.ctx.state==='running'){const w=SHOP_W[SERVICES[S.svc].id]||SHOP_W.oil;let r=Math.random(),k=0;while(k<w.length-1&&r>w[k]){r-=w[k];k++}
+  if(k===0)ratchet();else if(k===1){impact();if(Math.random()<.5)setTimeout(()=>A.ctx&&impact(),900+Math.random()*700)}else if(k===2)clank();else if(k===3)airgun();else vacuum()}setTimeout(shopLoop,3500+Math.random()*7000)}
 // passing car on wet road
 function passCar(){const C=A.ctx,t=C.currentTime,d=5.5,dir=Math.random()<.5?1:-1;
   const s=C.createBufferSource();s.buffer=A.white;s.loop=true;const s2=C.createBufferSource();s2.buffer=A.brown;s2.loop=true;
@@ -767,6 +905,20 @@ function chime(){if(!A.ctx)return;[[659.25,0],[523.25,.45]].forEach(([f,at])=>{t
 function uiBeep(f){if(!A.ctx||S.muted)return;tone(A.master,{f,dur:.08,gain:.05,type:'triangle'})}
 function stampSound(){if(!A.ctx)return;burst(A.master,{dur:.12,lp:500,gain:.6});tone(A.master,{f:90,dur:.15,gain:.25})}
 document.addEventListener('pointerdown',()=>{if(!A.ctx)initAudio()},{once:true});
+
+/* calm toggle */
+function setCalmIcon(){$('#calmIcon').setAttribute('href',S.calm?'#i-eyeoff':'#i-eye');$('#calmBtn').title=S.calm?'남은 시간 보기':'남은 시간 가리기'}
+setCalmIcon();
+$('#calmBtn').onclick=()=>{S.calm=!S.calm;store.set('calm',S.calm);setCalmIcon();render();toast(S.calm?'남은 시간을 가렸어요. 진행 막대만 보여요':'남은 시간을 다시 보여드려요')};
+/* pets */
+function heart(x,y){const t=document.createElementNS(NS,'text');t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('class','heart');t.textContent='♥';room.appendChild(t);setTimeout(()=>t.remove(),1900)}
+function purr(){if(!A.ctx||S.muted)return;const C=A.ctx,t=C.currentTime,d=2.2;const s=C.createBufferSource();s.buffer=A.brown;const f=C.createBiquadFilter();f.type='lowpass';f.frequency.value=160;
+  const am=C.createGain();am.gain.value=.5;const l=C.createOscillator();l.frequency.value=24;const lg=C.createGain();lg.gain.value=.5;l.connect(lg).connect(am.gain);
+  const g=C.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.9,t+.3);g.gain.linearRampToValueAtTime(0,t+d);s.connect(f).connect(am).connect(g).connect(A.master);s.start(t,Math.random()*3);l.start(t);s.stop(t+d);l.stop(t+d)}
+function thump(){if(!A.ctx||S.muted)return;for(let i=0;i<4;i++)tone(A.master,{f:70,at:i*.22,dur:.12,gain:.18});burst(A.master,{at:.05,dur:.12,lp:1200,gain:.08})}
+let dogT,catT;
+$('#dog').addEventListener('click',()=>{const d=$('#dog');d.classList.add('awake');clearTimeout(dogT);dogT=setTimeout(()=>d.classList.remove('awake'),4500);heart(1240,650);thump()});
+$('#cat').addEventListener('click',()=>{const c=$('#cat');c.classList.add('awake');clearTimeout(catT);catT=setTimeout(()=>c.classList.remove('awake'),2000);heart(1420,570);purr()});
 
 /* mixer */
 document.querySelectorAll('.mixer input').forEach(inp=>{const k=inp.dataset.k;inp.value=S.vol[k];
