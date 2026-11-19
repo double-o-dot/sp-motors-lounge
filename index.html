@@ -203,7 +203,7 @@ input{font:inherit}
 .mixer.on{opacity:1;transform:none;pointer-events:auto}
 .mixer h4{font-size:11px;color:#a59d91;font-weight:500;margin-bottom:8px;letter-spacing:.06em}
 .mrow{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:12.5px}
-.mrow span{width:86px;flex:none;color:#d9d2c6}
+.mrow span{width:104px;flex:none;color:#d9d2c6}
 .mrow input{flex:1;accent-color:var(--amber);height:20px}
 .confirm{position:absolute;inset:0;background:rgba(12,11,10,.94);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;pointer-events:none;transition:opacity .2s}
 .confirm.on{opacity:1;pointer-events:auto}
@@ -525,7 +525,7 @@ input{font:inherit}
   <!-- price board -->
   <g transform="translate(922 230)">
     <rect width="54" height="170" rx="4" fill="#2a2420"/><rect x="5" y="5" width="44" height="160" rx="2" fill="#efe7d6" opacity=".9"/>
-    <text x="27" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#1b1814" font-family="Noto Sans KR,sans-serif">요금표</text>
+    <text x="27" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#1b1814" font-family="Noto Sans KR,sans-serif">PRICES</text>
     <path d="M10 34h34M10 48h28M10 62h34M10 76h22M10 90h34M10 104h26M10 118h34M10 132h30M10 146h20" stroke="#8a7f6c" stroke-width="2.5" stroke-linecap="round"/>
   </g>
 
@@ -535,13 +535,13 @@ input{font:inherit}
     <rect width="260" height="156" rx="8" fill="#0b0b0b"/>
     <rect x="8" y="8" width="244" height="140" rx="3" fill="#0d1a1b"/>
     <circle cx="22" cy="24" r="4" fill="#e2513b" class="flick"/>
-    <text x="32" y="28" font-family="Noto Sans KR,sans-serif" font-size="11" fill="#7fb8ad" font-weight="700">정비 현황 LIVE</text>
-    <text x="240" y="28" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="#5f8a82" id="tvSess">1회차</text>
+    <text x="32" y="28" font-family="Noto Sans KR,sans-serif" font-size="11" fill="#7fb8ad" font-weight="700">SERVICE STATUS · LIVE</text>
+    <text x="240" y="28" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="#5f8a82" id="tvSess">Session 1</text>
     <text x="22" y="64" font-family="JetBrains Mono,monospace" font-size="24" font-weight="700" fill="#e9fff9" id="tvPlate">12가 3456</text>
-    <text x="22" y="86" font-family="Noto Sans KR,sans-serif" font-size="12" fill="#9fc9c0" id="tvJob">엔진오일 교환 · 박 반장</text>
+    <text x="22" y="86" font-family="Noto Sans KR,sans-serif" font-size="12" fill="#9fc9c0" id="tvJob">Oil change · Chief Park</text>
     <rect x="22" y="104" width="216" height="8" rx="4" fill="#173030"/>
     <rect x="22" y="104" width="0" height="8" rx="4" fill="#3fd0b0" id="tvBar"/>
-    <text x="22" y="134" font-family="Noto Sans KR,sans-serif" font-size="13" font-weight="700" fill="#3fd0b0" id="tvStatus">작업 중</text>
+    <text x="22" y="134" font-family="Noto Sans KR,sans-serif" font-size="13" font-weight="700" fill="#3fd0b0" id="tvStatus">Working</text>
     <text x="238" y="134" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="13" fill="#9fc9c0" id="tvPct">0%</text>
     <rect x="110" y="156" width="40" height="18" fill="#0b0b0b"/>
   </g>
@@ -584,7 +584,7 @@ input{font:inherit}
     <rect width="130" height="282" rx="8" fill="#5a241d"/>
     <rect x="8" y="8" width="114" height="62" rx="4" fill="#2a110d"/>
     <text x="65" y="34" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-weight="900" font-size="18" fill="#ffcf7a" filter="url(#fGlow)">COFFEE</text>
-    <text x="65" y="56" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-size="11" fill="#e8b48f">무료 · 고객 전용</text>
+    <text x="65" y="56" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-size="11" fill="#e8b48f">FREE · FOR GUESTS</text>
     <g fill="#f4efe6"><rect x="14" y="84" width="30" height="16" rx="3"/><rect x="50" y="84" width="30" height="16" rx="3"/><rect x="86" y="84" width="30" height="16" rx="3"/><rect x="14" y="106" width="30" height="16" rx="3"/><rect x="50" y="106" width="30" height="16" rx="3"/><rect x="86" y="106" width="30" height="16" rx="3"/></g>
     <g fill="#3fd0b0"><circle cx="40" cy="92" r="2"/><circle cx="76" cy="92" r="2"/><circle cx="112" cy="92" r="2"/></g>
     <rect x="30" y="150" width="70" height="72" rx="4" fill="#140807" stroke="#2a110d" stroke-width="3"/>
@@ -643,7 +643,7 @@ input{font:inherit}
   <path d="M60 812 Q800 790 1540 812 L1600 900 H0Z" fill="url(#gTable)"/>
   <path d="M60 812 Q800 790 1540 812" stroke="#7a5a40" stroke-width="2" fill="none" opacity=".6"/>
   <!-- magazine -->
-  <g transform="translate(200 822) rotate(-6)"><rect width="150" height="56" rx="3" fill="#d8d1c4"/><rect x="8" y="8" width="60" height="40" fill="#3b5b78"/><path d="M78 14h60M78 24h50M78 34h56" stroke="#7e766a" stroke-width="3"/><text x="38" y="34" text-anchor="middle" font-size="9" font-weight="900" fill="#eee" font-family="Noto Sans KR,sans-serif">월간 자동차</text></g>
+  <g transform="translate(200 822) rotate(-6)"><rect width="150" height="56" rx="3" fill="#d8d1c4"/><rect x="8" y="8" width="60" height="40" fill="#3b5b78"/><path d="M78 14h60M78 24h50M78 34h56" stroke="#7e766a" stroke-width="3"/><text x="38" y="26" text-anchor="middle" font-size="9" font-weight="900" fill="#eee" font-family="Noto Sans KR,sans-serif"><tspan x="38">AUTO</tspan><tspan x="38" dy="11">MONTHLY</tspan></text></g>
   <!-- car key with tag -->
   <g transform="translate(410 834) rotate(12)"><circle r="10" fill="none" stroke="#bfc3c6" stroke-width="3"/><rect x="8" y="-9" width="38" height="18" rx="7" fill="#1c1c1c"/><circle cx="20" cy="0" r="3" fill="#444"/><path d="M-8 6l-30 14" stroke="#bfc3c6" stroke-width="2"/><rect x="-74" y="14" width="40" height="22" rx="3" fill="#f2a33a" transform="rotate(-20 -54 25)"/><text x="-56" y="34" text-anchor="middle" font-size="9" font-weight="900" fill="#1a1209" font-family="JetBrains Mono,monospace" transform="rotate(-20 -54 25)" id="keyTag">0427</text></g>
   <!-- paper cup coffee -->
@@ -660,35 +660,35 @@ input{font:inherit}
 </svg>
 
   <div class="hint">
-    <button class="iconbtn" id="fsBtn" aria-label="전체 화면"><svg><use href="#i-full2"/></svg></button>
+    <button class="iconbtn" id="fsBtn" aria-label="Fullscreen"><svg><use href="#i-full2"/></svg></button>
   </div>
   <div class="toast" id="toast"></div>
 
   <div class="panel" id="panel">
     <div class="mixer" id="mixer">
-      <h4>대기실 소리 조절</h4>
-      <div class="mrow"><span>라디오 음악</span><input type="range" min="0" max="100" data-k="music"></div>
-      <div class="mrow"><span>빗소리</span><input type="range" min="0" max="100" data-k="rain"></div>
-      <div class="mrow"><span>작업장 공구</span><input type="range" min="0" max="100" data-k="shop"></div>
-      <div class="mrow"><span>지나가는 차</span><input type="range" min="0" max="100" data-k="car"></div>
-      <div class="mrow"><span>히터 웅웅</span><input type="range" min="0" max="100" data-k="heater"></div>
+      <h4>Lounge sounds</h4>
+      <div class="mrow"><span>Radio</span><input type="range" min="0" max="100" data-k="music"></div>
+      <div class="mrow"><span>Rain</span><input type="range" min="0" max="100" data-k="rain"></div>
+      <div class="mrow"><span>Workshop tools</span><input type="range" min="0" max="100" data-k="shop"></div>
+      <div class="mrow"><span>Passing cars</span><input type="range" min="0" max="100" data-k="car"></div>
+      <div class="mrow"><span>Heater hum</span><input type="range" min="0" max="100" data-k="heater"></div>
     </div>
     <div class="p-top">
-      <span class="mode"><i></i><span id="modeTxt">작업 중 · 1회차</span></span>
-      <span style="display:flex;gap:2px"><button class="ctl" id="calmBtn" aria-label="남은 시간 가리기" title="남은 시간 가리기" style="width:28px;height:28px"><svg style="width:15px;height:15px"><use href="#i-eye" id="calmIcon"/></svg></button>
-      <button class="ctl" id="endBtn" aria-label="나가기" style="width:28px;height:28px"><svg style="width:14px;height:14px"><use href="#i-x"/></svg></button></span>
+      <span class="mode"><i></i><span id="modeTxt">Working · Session 1</span></span>
+      <span style="display:flex;gap:2px"><button class="ctl" id="calmBtn" aria-label="Hide time remaining" title="Hide time remaining" style="width:28px;height:28px"><svg style="width:15px;height:15px"><use href="#i-eye" id="calmIcon"/></svg></button>
+      <button class="ctl" id="endBtn" aria-label="Leave" style="width:28px;height:28px"><svg style="width:14px;height:14px"><use href="#i-x"/></svg></button></span>
     </div>
     <div class="time" id="time">25:00</div>
     <div class="prog"><i id="progBar"></i></div>
     <div class="p-bot">
-      <div class="np"><small id="radioTxt">SP 라디오</small><b id="trackTxt">—</b></div>
-      <button class="ctl" id="mixBtn" aria-label="소리 조절"><svg><use href="#i-mix"/></svg></button>
-      <button class="ctl play" id="playBtn" aria-label="일시정지/재생"><svg><use href="#i-pause" id="playIcon"/></svg></button>
-      <button class="ctl" id="nextBtn" aria-label="다음 곡"><svg><use href="#i-next"/></svg></button>
+      <div class="np"><small id="radioTxt">SP Radio</small><b id="trackTxt">—</b></div>
+      <button class="ctl" id="mixBtn" aria-label="Sound mixer"><svg><use href="#i-mix"/></svg></button>
+      <button class="ctl play" id="playBtn" aria-label="Play / pause"><svg><use href="#i-pause" id="playIcon"/></svg></button>
+      <button class="ctl" id="nextBtn" aria-label="Next track"><svg><use href="#i-next"/></svg></button>
     </div>
     <div class="confirm" id="confirm">
-      <p>정비를 마치고 대기실을 나갈까요?</p>
-      <div><button id="cNo">더 있을래요</button><button class="y" id="cYes">출고하기</button></div>
+      <p>All done? Ready to leave the lounge?</p>
+      <div><button id="cNo">Stay a bit</button><button class="y" id="cYes">Check out</button></div>
     </div>
   </div>
 </section>
@@ -696,17 +696,18 @@ input{font:inherit}
 <script>
 /* ================= data ================= */
 const SERVICES=[
-  {id:'oil',name:'엔진오일 교환',min:25,icon:'i-oil'},
-  {id:'tire',name:'타이어 교체',min:30,icon:'i-tire'},
-  {id:'brake',name:'브레이크 점검',min:45,icon:'i-brake'},
-  {id:'batt',name:'배터리 교체',min:15,icon:'i-batt'},
-  {id:'ac',name:'에어컨 점검',min:25,icon:'i-ac'},
-  {id:'wash',name:'실내 세차',min:20,icon:'i-wash'},
-  {id:'wiper',name:'와이퍼 교체',min:10,icon:'i-wiper'},
-  {id:'full',name:'종합 점검',min:50,icon:'i-full'}
+  {id:'oil',en:'Oil change',name:'엔진오일 교환',min:25,icon:'i-oil'},
+  {id:'tire',en:'Tire change',name:'타이어 교체',min:30,icon:'i-tire'},
+  {id:'brake',en:'Brake check',name:'브레이크 점검',min:45,icon:'i-brake'},
+  {id:'batt',en:'Battery swap',name:'배터리 교체',min:15,icon:'i-batt'},
+  {id:'ac',en:'A/C check',name:'에어컨 점검',min:25,icon:'i-ac'},
+  {id:'wash',en:'Interior clean',name:'실내 세차',min:20,icon:'i-wash'},
+  {id:'wiper',en:'Wiper change',name:'와이퍼 교체',min:10,icon:'i-wiper'},
+  {id:'full',en:'Full inspection',name:'종합 점검',min:50,icon:'i-full'}
 ];
 const MECHS=['박 반장','김 실장','이 기사','최 팀장','정 반장'];
-const START_MSG={oil:'차를 리프트에 올리고 엔진오일을 빼고 있어요',tire:'차를 띄우고 휠 너트를 풀고 있어요',brake:'바퀴를 떼고 브레이크 패드를 보고 있어요',batt:'보닛을 열고 배터리를 갈고 있어요',ac:'보닛을 열고 에어컨 가스 압력을 재고 있어요',wash:'실내를 청소기로 정리하고 있어요',wiper:'와이퍼 블레이드를 갈아 끼우고 있어요',full:'차를 띄우고 하부를 꼼꼼히 살피고 있어요'};
+const MECHS_EN={'박 반장':'Chief Park','김 실장':'Manager Kim','이 기사':'Tech Lee','최 팀장':'Lead Choi','정 반장':'Chief Jung'};
+const START_MSG={oil:'has the car up on the lift and is draining the oil',tire:'has the car up and is loosening the lug nuts',brake:'has pulled the wheel and is checking the brake pads',batt:'has the hood up and is swapping the battery',ac:'has the hood up and is checking the A/C pressure',wash:'is vacuuming the interior',wiper:'is fitting new wiper blades',full:'has the car up and is inspecting the underside'};
 const SHOP_W={oil:[.6,.1,.2,.1,0],tire:[.15,.65,.1,.1,0],brake:[.3,.4,.2,.1,0],batt:[.45,.05,.4,.1,0],ac:[.2,0,.3,.5,0],wash:[0,0,.1,.2,.7],wiper:[.3,0,.6,.1,0],full:[.4,.2,.3,.1,0]};
 const TRACKS=[
   {title:'Waiting Room Waltz',file:'music/Waiting_Room_Waltz.mp3'},
@@ -785,10 +786,10 @@ addEventListener('resize',fitView);fitView();
 const room=$('#room'),panel=$('#panel');
 function enterRoom(){
   const s=SERVICES[S.svc];
-  $('#tvPlate').textContent=S.plate;$('#tvJob').textContent=`${s.name} · ${S.mech}`;$('#keyTag').textContent=S.woNo;
+  $('#tvPlate').textContent=S.plate;$('#tvJob').textContent=`${s.en} · ${MECHS_EN[S.mech]}`;$('#keyTag').textContent=S.woNo;
   room.dataset.svc=s.id;
   show('scene');S.session=1;startPhase('focus');
-  startMusic();toast(`${S.mech}님이 ${START_MSG[s.id]}`);
+  startMusic();toast(`${MECHS_EN[S.mech]} ${START_MSG[s.id]}.`);
 }
 function startPhase(mode){
   S.mode=mode;S.total=(mode==='focus'?S.focus:S.rest)*60;S.endAt=Date.now()+S.total*1000;S.running=true;
@@ -799,24 +800,24 @@ function remaining(){return S.running?Math.max(0,(S.endAt-Date.now())/1000):S.re
 function render(){
   const isF=S.mode==='focus';
   const r=remaining();const m=Math.floor(Math.ceil(r)/60),s=Math.ceil(r)%60;const t=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  $('#time').textContent=S.calm?(isF?'천천히, 지금 할 일 하나만':'잠깐 쉬어가요'):t;
+  $('#time').textContent=S.calm?(isF?'Slowly — one thing at a time':'Take a breather'):t;
   panel.classList.toggle('calm',!!S.calm);
   const p=S.total?1-r/S.total:0;$('#progBar').style.width=(p*100)+'%';
-  $('#modeTxt').textContent=(S.running?(isF?'작업 중':'커피 타임'):'일시 정지')+` · ${S.session}회차`;
-  $('#tvSess').textContent=S.session+'회차';
-  $('#tvStatus').textContent=isF?(S.running?'작업 중':'작업 대기'):'정비사 휴식 중';
+  $('#modeTxt').textContent=(S.running?(isF?'Working':'Coffee break'):'Paused')+` · Session ${S.session}`;
+  $('#tvSess').textContent='Session '+S.session;
+  $('#tvStatus').textContent=isF?(S.running?'Working':'On hold'):'Mechanic on break';
   $('#tvStatus').setAttribute('fill',isF?'#3fd0b0':'#f2a33a');
   $('#tvBar').setAttribute('fill',isF?'#3fd0b0':'#f2a33a');
   $('#tvBar').setAttribute('width',216*p);$('#tvPct').textContent=Math.floor(p*100)+'%';
   room.classList.toggle('working',isF&&S.running);
-  if(TRACKS.length&&audio.duration){const f=x=>`${Math.floor(x/60)}:${String(Math.floor(x%60)).padStart(2,'0')}`;$('#radioTxt').textContent=`SP 라디오 · ${f(audio.currentTime)} / ${f(audio.duration)}`}
-  if($('#scene').classList.contains('on'))document.title=`${S.calm?'':t+' · '}${isF?'작업 중':'휴식'} — SP Motors`;
+  if(TRACKS.length&&audio.duration){const f=x=>`${Math.floor(x/60)}:${String(Math.floor(x%60)).padStart(2,'0')}`;$('#radioTxt').textContent=`SP Radio · ${f(audio.currentTime)} / ${f(audio.duration)}`}
+  if($('#scene').classList.contains('on'))document.title=`${S.calm?'':t+' · '}${isF?'Working':'Break'} — SP Motors`;
 }
 setInterval(()=>{if(!$('#scene').classList.contains('on'))return;if(S.running&&remaining()<=0)phaseDone();render()},250);
 function phaseDone(){
   chime();
-  if(S.mode==='focus'){toast(`작업 ${S.session}회차 완료! 커피 한 잔 하세요 · 휴식 ${S.rest}분`);startPhase('rest')}
-  else{S.session++;toast(`휴식 끝 — ${S.session}회차 작업 들어갑니다`);startPhase('focus')}
+  if(S.mode==='focus'){toast(`Session ${S.session} done! Grab a coffee · ${S.rest} min break`);startPhase('rest')}
+  else{S.session++;toast(`Break's over — starting session ${S.session}`);startPhase('focus')}
 }
 function setPlayIcon(){$('#playIcon').setAttribute('href',S.running?'#i-pause':'#i-play')}
 $('#playBtn').onclick=()=>{
@@ -836,11 +837,11 @@ let toastT;function toast(msg){const t=$('#toast');t.textContent=msg;t.classList
 /* ================= music ================= */
 const audio=new Audio();audio.preload='auto';audio.muted=S.muted;
 S.track=Math.floor(Math.random()*Math.max(1,TRACKS.length));
-function loadTrack(i){if(!TRACKS.length){$('#trackTxt').textContent='라디오 꺼짐 · 빗소리만';return}S.track=(i+TRACKS.length)%TRACKS.length;const t=TRACKS[S.track];audio.src=t.file;$('#trackTxt').textContent=t.title;audio.volume=S.vol.music/100}
+function loadTrack(i){if(!TRACKS.length){$('#trackTxt').textContent='Radio off · rain only';return}S.track=(i+TRACKS.length)%TRACKS.length;const t=TRACKS[S.track];audio.src=t.file;$('#trackTxt').textContent=t.title;audio.volume=S.vol.music/100}
 function startMusic(){loadTrack(S.track);if(TRACKS.length)audio.play().catch(()=>{})}
 function nextTrack(){if(!TRACKS.length)return;loadTrack(S.track+1);if(S.running)audio.play().catch(()=>{});toast('♪ '+TRACKS[S.track].title)}
 audio.addEventListener('ended',()=>nextTrack());
-audio.addEventListener('error',()=>{$('#radioTxt').textContent='SP 라디오 · 신호 없음'});
+audio.addEventListener('error',()=>{$('#radioTxt').textContent='SP Radio · no signal'});
 
 /* ================= synth ambience ================= */
 const A={ctx:null};
@@ -907,9 +908,9 @@ function stampSound(){if(!A.ctx)return;burst(A.master,{dur:.12,lp:500,gain:.6});
 document.addEventListener('pointerdown',()=>{if(!A.ctx)initAudio()},{once:true});
 
 /* calm toggle */
-function setCalmIcon(){$('#calmIcon').setAttribute('href',S.calm?'#i-eyeoff':'#i-eye');$('#calmBtn').title=S.calm?'남은 시간 보기':'남은 시간 가리기'}
+function setCalmIcon(){$('#calmIcon').setAttribute('href',S.calm?'#i-eyeoff':'#i-eye');$('#calmBtn').title=S.calm?'Show time remaining':'Hide time remaining';$('#calmBtn').setAttribute('aria-label',$('#calmBtn').title)}
 setCalmIcon();
-$('#calmBtn').onclick=()=>{S.calm=!S.calm;store.set('calm',S.calm);setCalmIcon();render();toast(S.calm?'남은 시간을 가렸어요. 진행 막대만 보여요':'남은 시간을 다시 보여드려요')};
+$('#calmBtn').onclick=()=>{S.calm=!S.calm;store.set('calm',S.calm);setCalmIcon();render();toast(S.calm?'Time hidden — just the progress bar now':'Showing the time again')};
 /* pets */
 function heart(x,y){const t=document.createElementNS(NS,'text');t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('class','heart');t.textContent='♥';room.appendChild(t);setTimeout(()=>t.remove(),1900)}
 function purr(){if(!A.ctx||S.muted)return;const C=A.ctx,t=C.currentTime,d=2.2;const s=C.createBufferSource();s.buffer=A.brown;const f=C.createBiquadFilter();f.type='lowpass';f.frequency.value=160;
