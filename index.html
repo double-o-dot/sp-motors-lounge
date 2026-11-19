@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0a09">
+<title>SP Motors 대기실 — 비 오는 날의 집중 공간</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--amber:#f2a33a;--amber2:#ffd28a;--teal:#3fd0b0;--paper:#efe7d6;--ink:#1b1814;--red:#d9503a;--line:rgba(255,255,255,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0b0a09;color:#ece7df;font-family:'Noto Sans KR',system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input{font:inherit}
+.screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .8s ease;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.screen.on{opacity:1;pointer-events:auto}
+
+/* ---------- shared backdrop ---------- */
+.backdrop{position:absolute;inset:0;overflow:hidden;background:radial-gradient(60% 50% at 50% 42%,rgba(242,163,58,.16),transparent 70%),linear-gradient(#0d0c0b 0 66%,#1c1814 66% 100%)}
+.backdrop::after{content:"";position:absolute;left:0;right:0;top:66%;height:10px;background:repeating-linear-gradient(-45deg,#d9a21b 0 16px,#141210 16px 32px);opacity:.55}
+.backdrop .rainline{position:absolute;inset:0;background:repeating-linear-gradient(100deg,transparent 0 22px,rgba(160,190,220,.05) 22px 23px);animation:drift 1s linear infinite;mask:linear-gradient(#000 0 60%,transparent 66%);-webkit-mask:linear-gradient(#000 0 60%,transparent 66%)}
+@keyframes drift{from{background-position:0 0}to{background-position:-30px 220px}}
+
+/* ---------- kiosk ---------- */
+.kiosk{position:relative;width:min(452px,92vw);z-index:2;display:flex;flex-direction:column;align-items:center}
+.k-body{width:100%;background:linear-gradient(#2a2724,#1d1b19);border-radius:30px;padding:12px;box-shadow:0 40px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px #000}
+.k-screen{background:#141311;border-radius:20px;overflow:hidden;border:1px solid #000}
+.k-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.logo{width:30px;height:30px;flex:none}
+.brand{font-weight:900;letter-spacing:.02em;font-size:15px}
+.brand small{display:block;font-weight:500;font-size:10px;color:#8d867c;letter-spacing:.12em;margin-top:1px}
+.k-head .sp{flex:1}
+.iconbtn{width:34px;height:34px;border-radius:50%;background:#24221f;display:grid;place-items:center;border:1px solid var(--line);transition:background .2s}
+.iconbtn:hover{background:#2f2c28}
+.iconbtn svg{width:16px;height:16px}
+.k-title{padding:22px 18px 6px;text-align:center}
+.k-title h1{font-size:19px;font-weight:700}
+.k-title p{font-size:12.5px;color:#9a9286;margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px 14px 8px}
+.tile{aspect-ratio:1/1.08;border-radius:14px;background:#1e1c1a;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#cfc7ba;transition:transform .18s,background .2s,color .2s,box-shadow .2s;padding:6px 4px}
+.tile svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tile b{font-size:11.5px;font-weight:700;line-height:1.2;text-align:center;word-break:keep-all}
+.tile i{font-style:normal;font-size:10px;color:#7f786e;font-family:'JetBrains Mono',monospace}
+.tile:hover{transform:translateY(-2px);background:#262320}
+.tile.sel{background:var(--amber);color:#1a1209;box-shadow:0 8px 24px rgba(242,163,58,.35)}
+.tile.sel i{color:#4a3415}
+.k-foot{padding:10px 14px 16px}
+.cta{width:100%;height:50px;border-radius:999px;background:#f3eee6;color:#16130f;font-weight:700;font-size:14.5px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,filter .2s}
+.cta:hover{filter:brightness(1.05)}.cta:active{transform:scale(.98)}
+.cta svg{width:16px;height:16px}
+.k-meta{display:flex;justify-content:space-between;padding:8px 6px 0;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#6d665d;letter-spacing:.1em}
+.k-meta .dots i{display:inline-block;width:5px;height:5px;border-radius:50%;background:#555;margin-left:4px}
+.k-meta .dots i:first-child{background:var(--teal);box-shadow:0 0 6px var(--teal)}
+.stand{width:46%;height:26px;background:linear-gradient(#26231f,#141210);border-radius:0 0 12px 12px;margin-top:-2px;position:relative;box-shadow:0 18px 30px rgba(0,0,0,.5)}
+.stand::after{content:"";position:absolute;left:12%;right:12%;top:9px;height:4px;border-radius:4px;background:#0a0908}
+.credit{position:absolute;bottom:calc(14px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:10.5px;color:#5f594f;letter-spacing:.04em;z-index:2}
+
+/* ---------- work order ---------- */
+.order{position:relative;z-index:2;width:min(400px,90vw);max-height:92vh;overflow:auto;scrollbar-width:none}
+.order::-webkit-scrollbar{display:none}
+.clip{width:120px;height:34px;margin:0 auto -14px;background:linear-gradient(#bfc3c6,#80868b);border-radius:8px 8px 4px 4px;position:relative;z-index:3;box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.clip::after{content:"";position:absolute;left:44px;right:44px;top:7px;height:10px;border-radius:6px;background:#3d4144}
+.paper{background:var(--paper);color:var(--ink);border-radius:6px;padding:30px 22px 20px;box-shadow:0 30px 60px rgba(0,0,0,.6);position:relative;transform:translateY(30px);opacity:0;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s}
+.screen.on .paper{transform:none;opacity:1}
+.paper::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 27px,rgba(60,90,140,.07) 27px 28px);border-radius:6px;pointer-events:none}
+.p-head{text-align:center}
+.p-head .row{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:900;font-size:17px}
+.p-head .row svg{width:22px;height:22px}
+.p-head p{font-size:11px;color:#6d6455;margin-top:2px;letter-spacing:.2em}
+.mono{font-family:'JetBrains Mono',monospace}
+.meta{display:flex;justify-content:space-between;font-size:10.5px;margin-top:14px;color:#4b443a}
+.bar{height:22px;margin:8px auto 2px;width:150px;background:repeating-linear-gradient(90deg,#1b1814 0 2px,transparent 2px 4px,#1b1814 4px 5px,transparent 5px 8px,#1b1814 8px 11px,transparent 11px 12px)}
+.dash{border-top:1.5px dashed #b8ac97;margin:12px 0}
+.field{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;margin:7px 0}
+.field span{color:#6d6455}
+.plate{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;width:140px;text-align:center;padding:6px 8px;border:2px solid #1b1814;border-radius:6px;background:#fffdf7;color:#1b1814;outline:none;user-select:text;-webkit-user-select:text}
+.plate:focus{border-color:var(--amber)}
+.job{display:flex;align-items:center;gap:8px;font-weight:700}
+.job svg{width:20px;height:20px;fill:none;stroke:#1b1814;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.sec{font-size:11px;font-weight:700;color:#6d6455;margin:14px 0 6px;letter-spacing:.05em}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.chip{height:40px;border-radius:10px;background:#2a2622;color:#efe7d6;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+.chip.sel{background:#fffdf7;color:#1b1814;box-shadow:inset 0 0 0 2px #1b1814;font-weight:700}
+.chip input{width:46px;background:transparent;border:0;color:inherit;text-align:center;font-weight:700;outline:none;user-select:text;-webkit-user-select:text}
+.sum{text-align:center;font-size:12px;color:#4b443a;margin-top:14px}
+.sum b{font-size:16px;display:block;color:#1b1814;margin-top:2px}
+.stamp{position:absolute;right:18px;top:92px;width:78px;height:78px;border:3px solid var(--red);color:var(--red);border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:13px;transform:rotate(-14deg) scale(1.6);opacity:0;transition:transform .25s cubic-bezier(.3,1.6,.5,1),opacity .2s;text-align:center;line-height:1.15}
+.stamp.on{opacity:.85;transform:rotate(-14deg) scale(1)}
+.go{margin-top:14px;width:100%;height:50px;border-radius:12px;background:var(--teal);color:#06231d;font-weight:700;font-size:14.5px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 20px rgba(63,208,176,.3);transition:transform .15s,filter .2s}
+.go:hover{filter:brightness(1.05)}.go:active{transform:scale(.98)}
+.go svg{width:16px;height:16px}
+.back{display:flex;align-items:center;gap:6px;font-size:12px;color:#8d867c;margin:0 auto 10px;width:max-content}
+.back svg{width:14px;height:14px}
+.torn{height:12px;background:linear-gradient(-45deg,transparent 6px,var(--paper) 0) 0 0/12px 12px repeat-x,linear-gradient(45deg,transparent 6px,var(--paper) 0) 0 0/12px 12px repeat-x;transform:rotate(180deg);margin-top:-1px}
+
+/* ---------- scene ---------- */
+#scene{background:#0b0a09}
+#scene svg.room{position:absolute;inset:0;width:100%;height:100%;display:block}
+.rain line{stroke:rgba(190,215,240,.55);stroke-width:1.4;stroke-linecap:round;animation:fall linear infinite}
+@keyframes fall{from{transform:translate(0,-470px)}to{transform:translate(-46px,470px)}}
+.splash{fill:none;stroke:rgba(190,215,240,.5);stroke-width:1;transform-box:fill-box;transform-origin:center;animation:splash 1s ease-out infinite;opacity:0}
+@keyframes splash{0%{transform:scale(.2);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+.flick{animation:flick 7s infinite}
+@keyframes flick{0%,92%,100%{opacity:1}93%{opacity:.4}94%{opacity:1}95.5%{opacity:.6}96%{opacity:1}}
+.neon{animation:neon 9s infinite}
+@keyframes neon{0%,40%,44%,100%{opacity:1}41%{opacity:.55}43%{opacity:.85}}
+.steam path{fill:none;stroke:rgba(255,255,255,.35);stroke-width:3;stroke-linecap:round;animation:steam 3.2s ease-in-out infinite;opacity:0}
+.steam path:nth-child(2){animation-delay:1.1s}.steam path:nth-child(3){animation-delay:2.1s}
+@keyframes steam{0%{opacity:0;transform:translateY(8px)}30%{opacity:.8}100%{opacity:0;transform:translateY(-26px)}}
+#carLift{transition:transform 2.6s cubic-bezier(.45,0,.25,1)}
+.lowered #carLift{transform:translateY(140px)}
+#mechWork,#mechBreak{transition:opacity .9s}
+.lowered #mechWork{opacity:0}
+#mechBreak{opacity:0}
+.lowered #mechBreak{opacity:1}
+#arm{transform-box:fill-box;transform-origin:10% 92%}
+.working #arm{animation:wrench .32s ease-in-out infinite alternate}
+@keyframes wrench{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+#catBody{transform-box:fill-box;transform-origin:center bottom;animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{50%{transform:scaleY(1.05)}}
+#catTail{transform-box:fill-box;transform-origin:0% 50%;animation:tail 6s ease-in-out infinite}
+@keyframes tail{0%,80%,100%{transform:rotate(0)}88%{transform:rotate(-14deg)}}
+.headlights{opacity:0}
+.headlights.go{animation:pass 5.5s linear}
+@keyframes pass{0%{opacity:0;transform:translateX(-420px)}10%{opacity:1}90%{opacity:1}100%{opacity:0;transform:translateX(420px)}}
+.drop{fill:rgba(220,235,255,.35)}
+.drip{animation:drip linear infinite}
+@keyframes drip{0%{transform:translateY(0)}100%{transform:translateY(340px)}}
+
+/* player */
+.panel{position:absolute;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(470px,93vw);background:rgba(16,15,14,.72);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:12px 16px 14px;box-shadow:0 20px 50px rgba(0,0,0,.5);z-index:5}
+.p-top{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#a59d91}
+.mode{display:flex;align-items:center;gap:6px;letter-spacing:.04em}
+.mode i{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal)}
+.rest .mode i{background:var(--amber);box-shadow:0 0 8px var(--amber)}
+.paused .mode i{background:#777;box-shadow:none}
+.time{font-family:'JetBrains Mono',monospace;font-size:46px;font-weight:700;text-align:center;letter-spacing:-.02em;line-height:1.05;margin:2px 0 6px;font-variant-numeric:tabular-nums}
+.paused .time{opacity:.55}
+.prog{height:3px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:10px}
+.prog i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s linear}
+.rest .prog i{background:var(--amber)}
+.p-bot{display:flex;align-items:center;gap:10px}
+.np{flex:1;min-width:0}
+.np small{display:block;font-size:10px;color:#857d72;letter-spacing:.06em}
+.np b{display:block;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctl{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#d9d2c6;transition:background .2s}
+.ctl:hover{background:rgba(255,255,255,.07)}
+.ctl svg{width:18px;height:18px}
+.play{width:48px;height:48px;background:var(--teal);color:#06231d}
+.play:hover{background:var(--teal);filter:brightness(1.08)}
+.rest .play{background:var(--amber);color:#2a1a05}
+.play svg{width:20px;height:20px}
+.ctl.on{color:var(--amber)}
+.mixer{position:absolute;left:0;right:0;bottom:calc(100% + 10px);background:rgba(16,15,14,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:14px 16px 8px;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .25s,transform .25s}
+.mixer.on{opacity:1;transform:none;pointer-events:auto}
+.mixer h4{font-size:11px;color:#a59d91;font-weight:500;margin-bottom:8px;letter-spacing:.06em}
+.mrow{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:12.5px}
+.mrow span{width:86px;flex:none;color:#d9d2c6}
+.mrow input{flex:1;accent-color:var(--amber);height:20px}
+.confirm{position:absolute;inset:0;background:rgba(12,11,10,.94);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;pointer-events:none;transition:opacity .2s}
+.confirm.on{opacity:1;pointer-events:auto}
+.confirm p{font-size:14px}
+.confirm div{display:flex;gap:8px}
+.confirm button{height:38px;padding:0 18px;border-radius:999px;background:#2a2724;font-size:13px}
+.confirm button.y{background:var(--red);color:#fff}
+.toast{position:absolute;top:calc(18px + env(safe-area-inset-top));left:50%;transform:translate(-50%,-20px);background:rgba(16,15,14,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .4s,transform .4s;z-index:6;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.hint{position:absolute;top:calc(18px + env(safe-area-inset-top));right:18px;z-index:5;display:flex;gap:8px}
+.hint .iconbtn{background:rgba(16,15,14,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+@media (max-width:520px){.toast{white-space:normal;word-break:keep-all;text-align:center;max-width:calc(100vw - 120px);border-radius:16px;font-size:12px}.time{font-size:40px}.grid{gap:6px;padding:14px 10px 6px}.tile b{font-size:10.5px}.tile svg{width:26px;height:26px}}
+</style>
+</head>
+<body>
+
+<!-- ===================== SVG defs (icons) ===================== -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-logo" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#f2a33a"/><circle cx="20" cy="20" r="13.5" fill="none" stroke="#1a1209" stroke-width="1.6" stroke-dasharray="3 2.2"/><text x="20" y="25" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-weight="900" font-size="14" fill="#1a1209">SP</text></symbol>
+    <symbol id="i-oil" viewBox="0 0 48 48"><path d="M7 21h19l6-5 9 2-10 9v8a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path d="M13 21v-4h7v4"/><path d="M42 29c0 2-1.6 3.4-1.6 3.4S38.8 31 38.8 29a1.6 1.6 0 0 1 3.2 0z"/></symbol>
+    <symbol id="i-tire" viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="7"/><path d="M24 7v5M24 36v5M7 24h5M36 24h5M12 12l3.5 3.5M32.5 32.5L36 36M12 36l3.5-3.5M32.5 15.5L36 12"/></symbol>
+    <symbol id="i-brake" viewBox="0 0 48 48"><circle cx="21" cy="27" r="14"/><circle cx="21" cy="27" r="4"/><path d="M29 10.5a15 15 0 0 1 9 10.5l-6.5 2a8 8 0 0 0-4.5-6.5z"/></symbol>
+    <symbol id="i-batt" viewBox="0 0 48 48"><rect x="6" y="15" width="36" height="23" rx="3"/><path d="M13 15v-4h6v4M29 15v-4h6v4M12.5 26.5h7M16 23v7M28.5 26.5h7"/></symbol>
+    <symbol id="i-ac" viewBox="0 0 48 48"><path d="M24 6v36M8.4 15l31.2 18M8.4 33l31.2-18M19 9.5l5 4 5-4M19 38.5l5-4 5 4"/></symbol>
+    <symbol id="i-wash" viewBox="0 0 48 48"><path d="M7 33l3.5-9a4 4 0 0 1 3.8-2.6h19.4a4 4 0 0 1 3.8 2.6L41 33v5H7z"/><circle cx="14.5" cy="38" r="3"/><circle cx="33.5" cy="38" r="3"/><path d="M17 7c0 2-2.2 3.2-2.2 5.2a2.2 2.2 0 0 0 4.4 0C19.2 10.2 17 9 17 7zM31 5c0 2-2.2 3.2-2.2 5.2a2.2 2.2 0 0 0 4.4 0C33.2 8.2 31 7 31 5z"/></symbol>
+    <symbol id="i-wiper" viewBox="0 0 48 48"><path d="M6 35a20 20 0 0 1 36 0"/><path d="M24 37L11.5 16"/><circle cx="24" cy="37" r="2.6"/></symbol>
+    <symbol id="i-full" viewBox="0 0 48 48"><path d="M31 7.5a8.5 8.5 0 0 0-8 11.3L8.8 33a3.1 3.1 0 0 0 4.4 4.4L27.4 23.2A8.5 8.5 0 0 0 38.6 13l-5.2 5.2-4.3-1.1-1.1-4.3 5.2-5.2A8.5 8.5 0 0 0 31 7.5z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M16 9.5l5 5M21 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5.5" width="4" height="13" rx="1.2" fill="currentColor"/><rect x="13.5" y="5.5" width="4" height="13" rx="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M6 6v12l8.5-6z" fill="currentColor"/><rect x="16" y="6" width="2.4" height="12" rx="1" fill="currentColor"/></symbol>
+    <symbol id="i-mix" viewBox="0 0 24 24"><path d="M5 4v16M12 4v16M19 4v16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="5" cy="14" r="2.4" fill="currentColor"/><circle cx="12" cy="8" r="2.4" fill="currentColor"/><circle cx="19" cy="15.5" r="2.4" fill="currentColor"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-full2" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- ===================== 1. KIOSK ===================== -->
+<section class="screen on" id="kiosk">
+  <div class="backdrop"><div class="rainline"></div></div>
+  <div class="kiosk">
+    <div class="k-body">
+      <div class="k-screen">
+        <div class="k-head">
+          <svg class="logo"><use href="#i-logo"/></svg>
+          <div class="brand sp">SP Motors<small>SERVICE · WAITING LOUNGE</small></div>
+          <button class="iconbtn" id="kSound" aria-label="소리 켜기/끄기"><svg><use href="#i-vol"/></svg></button>
+        </div>
+        <div class="k-title">
+          <h1>어떤 정비를 맡기시겠어요?</h1>
+          <p>비는 셔터 밖에, 차는 리프트 위에. 기다리는 동안 집중해요.</p>
+        </div>
+        <div class="grid" id="grid"></div>
+        <div class="k-foot">
+          <button class="cta" id="toOrder">접수하기 <svg><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+      <div class="k-meta"><span>SPM—KIOSK 01</span><span class="dots"><i></i><i></i><i></i></span></div>
+    </div>
+    <div class="stand"></div>
+  </div>
+  <div class="credit">음악 Google Gemini · 화면 Claude</div>
+</section>
+
+<!-- ===================== 2. WORK ORDER ===================== -->
+<section class="screen" id="order">
+  <div class="backdrop"><div class="rainline"></div></div>
+  <div class="order">
+    <button class="back" id="backK"><svg><use href="#i-back"/></svg>정비 항목 다시 고르기</button>
+    <div class="clip"></div>
+    <div class="paper">
+      <div class="p-head">
+        <div class="row"><svg><use href="#i-logo"/></svg>SP MOTORS</div>
+        <p>작 업 지 시 서</p>
+      </div>
+      <div class="meta mono"><span>No. <b id="woNo">0000</b></span><span id="woDate"></span></div>
+      <div class="bar"></div>
+      <div class="stamp" id="stamp">접수<br>완료</div>
+      <div class="dash"></div>
+      <div class="field"><span>차량번호</span><input class="plate" id="plate" maxlength="10" placeholder="12가 3456" autocomplete="off"></div>
+      <div class="field"><span>작업 항목</span><span class="job" id="woJob"></span></div>
+      <div class="field"><span>담당 정비사</span><b id="woMech"></b></div>
+      <div class="dash"></div>
+      <div class="sec">작업 시간 · 집중</div>
+      <div class="chips" id="fChips"></div>
+      <div class="sec">커피 타임 · 휴식</div>
+      <div class="chips" id="rChips"></div>
+      <div class="sum">예상 소요<b id="woSum"></b></div>
+      <button class="go" id="toRoom">키 맡기고 대기실로 <svg><use href="#i-arrow"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 3. WAITING ROOM ===================== -->
+<section class="screen" id="scene">
+<svg class="room working" id="room" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16130f"/><stop offset="1" stop-color="#241f1a"/></linearGradient>
+    <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a241e"/><stop offset="1" stop-color="#14110e"/></linearGradient>
+    <linearGradient id="gBay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#26323a"/><stop offset="1" stop-color="#1b2228"/></linearGradient>
+    <linearGradient id="gOut" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e1822"/><stop offset=".7" stop-color="#1b2a38"/><stop offset="1" stop-color="#2a3a46"/></linearGradient>
+    <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".07"/><stop offset=".5" stop-color="#fff" stop-opacity=".015"/><stop offset="1" stop-color="#9cc" stop-opacity=".05"/></linearGradient>
+    <linearGradient id="gTable" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4130"/><stop offset=".08" stop-color="#3f2d20"/><stop offset="1" stop-color="#1c140e"/></linearGradient>
+    <linearGradient id="gPost" x1="0" x2="1"><stop offset="0" stop-color="#b48c1e"/><stop offset=".5" stop-color="#e2b93a"/><stop offset="1" stop-color="#9a7716"/></linearGradient>
+    <linearGradient id="gCar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7d989c"/><stop offset=".55" stop-color="#55706f"/><stop offset="1" stop-color="#344443"/></linearGradient>
+    <radialGradient id="gLamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".55"/><stop offset=".4" stop-color="#f2a33a" stop-opacity=".16"/><stop offset="1" stop-color="#f2a33a" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gFluo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#dff0ff" stop-opacity=".35"/><stop offset="1" stop-color="#dff0ff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gStreet" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffc56b" stop-opacity=".7"/><stop offset="1" stop-color="#ffc56b" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gHead" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6d8" stop-opacity=".95"/><stop offset=".3" stop-color="#ffe6a0" stop-opacity=".35"/><stop offset="1" stop-color="#ffe6a0" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gTV" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#3fd0b0" stop-opacity=".22"/><stop offset="1" stop-color="#3fd0b0" stop-opacity="0"/></radialGradient>
+    <filter id="fGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="fSoft"><feGaussianBlur stdDeviation="2"/></filter>
+    <clipPath id="cDoor"><rect x="580" y="214" width="290" height="351"/></clipPath>
+    <clipPath id="cWin"><rect x="1312" y="160" width="236" height="330"/></clipPath>
+    <pattern id="pPeg" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="1.6" fill="#1a2025"/></pattern>
+  </defs>
+
+  <!-- walls & floor -->
+  <rect width="1600" height="900" fill="url(#gWall)"/>
+  <rect y="610" width="1600" height="95" fill="#211c17"/>
+  <rect y="606" width="1600" height="6" fill="#2f2822"/>
+  <rect y="700" width="1600" height="200" fill="url(#gFloor)"/>
+  <rect y="698" width="1600" height="5" fill="#0e0c0a"/>
+  <!-- floor reflection of bay -->
+  <path d="M110 705 L900 705 L960 860 L60 860Z" fill="#8fb4c8" opacity=".045"/>
+
+  <!-- ceiling lamps glow (waiting room) -->
+  <ellipse cx="1110" cy="300" rx="380" ry="320" fill="url(#gLamp)"/>
+  <ellipse cx="1440" cy="330" rx="300" ry="300" fill="url(#gLamp)" opacity=".8"/>
+
+  <!-- ============ SERVICE BAY (behind glass) ============ -->
+  <g id="bay">
+    <rect x="110" y="110" width="790" height="500" fill="url(#gBay)"/>
+    <!-- pegboard -->
+    <rect x="128" y="200" width="44" height="200" fill="#222a30"/><rect x="128" y="200" width="44" height="200" fill="url(#pPeg)"/>
+    <path d="M140 220v40M138 220h4M152 225l8 30M160 220v28" stroke="#7d8790" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="150" cy="300" r="10" fill="none" stroke="#7d8790" stroke-width="3"/>
+    <!-- bay sign -->
+    <text x="725" y="196" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-weight="900" font-size="15" letter-spacing="4" fill="#d9a21b" opacity=".85">BAY 01 · SP MOTORS</text>
+    <!-- outside through roller door -->
+    <rect x="580" y="214" width="290" height="351" fill="url(#gOut)"/>
+    <g clip-path="url(#cDoor)">
+      <!-- buildings -->
+      <path d="M580 400h50v-90h40v60h30v-120h60v100h40v-50h70v215H580z" fill="#0b131b"/>
+      <g fill="#ffcc77" opacity=".55"><rect x="690" y="300" width="7" height="9"/><rect x="706" y="300" width="7" height="9"/><rect x="706" y="330" width="7" height="9"/><rect x="644" y="330" width="6" height="8"/><rect x="830" y="380" width="7" height="9"/><rect x="845" y="395" width="7" height="9" opacity=".5"/></g>
+      <!-- street lamp -->
+      <path d="M800 565V300q0-14 -14-14h-18" stroke="#0a0f14" stroke-width="5" fill="none"/>
+      <rect x="756" y="282" width="20" height="7" rx="2" fill="#ffd28a"/>
+      <ellipse cx="766" cy="300" rx="70" ry="70" fill="url(#gStreet)"/>
+      <!-- wet road -->
+      <rect x="580" y="500" width="290" height="65" fill="#141e27"/>
+      <path d="M740 500l-14 65h40l-6-65z" fill="#ffc56b" opacity=".12"/>
+      <!-- passing car headlights -->
+      <g class="headlights" id="hl1"><ellipse cx="720" cy="505" rx="90" ry="22" fill="url(#gHead)"/><circle cx="700" cy="505" r="5" fill="#fffbe8"/><circle cx="742" cy="505" r="5" fill="#fffbe8"/><path d="M700 520l-10 45h60l-8-45z" fill="#fff0c0" opacity=".15"/></g>
+      <g class="rain" id="rainDoor"></g>
+      <g id="splashDoor"></g>
+    </g>
+    <!-- roller shutter (partially up) -->
+    <g>
+      <rect x="572" y="206" width="306" height="50" fill="#5d666d"/>
+      <path d="M572 214h306M572 222h306M572 230h306M572 238h306M572 246h306" stroke="#3f474d" stroke-width="2"/>
+      <rect x="572" y="252" width="306" height="6" fill="#3a4147"/>
+      <rect x="566" y="206" width="8" height="360" fill="#3a4147"/><rect x="876" y="206" width="8" height="360" fill="#3a4147"/>
+    </g>
+    <!-- fluorescent lights -->
+    <g class="flick"><rect x="200" y="128" width="220" height="10" rx="5" fill="#eaf4ff"/><ellipse cx="310" cy="160" rx="200" ry="80" fill="url(#gFluo)"/></g>
+    <g><rect x="560" y="128" width="220" height="10" rx="5" fill="#eaf4ff"/><ellipse cx="670" cy="160" rx="200" ry="80" fill="url(#gFluo)"/></g>
+    <!-- bay floor -->
+    <rect x="110" y="565" width="790" height="45" fill="#2b3237"/>
+    <path d="M110 565h790" stroke="#d9a21b" stroke-width="3" stroke-dasharray="22 14" opacity=".7"/>
+    <!-- tire stack -->
+    <g transform="translate(812 486)"><rect x="0" y="0" width="52" height="26" rx="10" fill="#111"/><rect x="0" y="27" width="52" height="26" rx="10" fill="#151515"/><rect x="0" y="54" width="52" height="26" rx="10" fill="#111"/><path d="M8 13h36M8 40h36M8 67h36" stroke="#2a2a2a" stroke-width="2" stroke-dasharray="4 3"/></g>
+    <!-- tool cart -->
+    <g transform="translate(724 470)"><rect x="0" y="0" width="70" height="80" rx="4" fill="#a8372a"/><rect x="0" y="0" width="70" height="8" fill="#c94b3b"/><path d="M6 24h58M6 44h58M6 64h58" stroke="#6d2018" stroke-width="2"/><rect x="28" y="16" width="14" height="3" rx="1.5" fill="#ddd"/><rect x="28" y="36" width="14" height="3" rx="1.5" fill="#ddd"/><rect x="28" y="56" width="14" height="3" rx="1.5" fill="#ddd"/><circle cx="10" cy="88" r="6" fill="#111"/><circle cx="60" cy="88" r="6" fill="#111"/><path d="M12 -2l14 -14h10" stroke="#9aa" stroke-width="3" fill="none"/></g>
+    <!-- lift posts -->
+    <rect x="178" y="215" width="20" height="350" fill="url(#gPost)"/><rect x="502" y="215" width="20" height="350" fill="url(#gPost)"/>
+    <rect x="172" y="555" width="32" height="10" fill="#7a5d10"/><rect x="496" y="555" width="32" height="10" fill="#7a5d10"/>
+    <path d="M182 240h12M182 280h12M182 320h12M182 360h12M182 400h12M182 440h12M182 480h12M182 520h12M506 240h12M506 280h12M506 320h12M506 360h12M506 400h12M506 440h12M506 480h12M506 520h12" stroke="#5e4a10" stroke-width="2"/>
+    <!-- mechanic working (under raised car) -->
+    <g id="mechWork" transform="translate(330 440)">
+      <!-- legs -->
+      <path d="M-14 70l-4 52h14l4-40 4 40h14l-4-52z" fill="#244266"/>
+      <rect x="-22" y="118" width="20" height="8" rx="3" fill="#111"/><rect x="2" y="118" width="20" height="8" rx="3" fill="#111"/>
+      <!-- torso -->
+      <path d="M-22 22q0-10 10-12h24q10 2 10 12v50h-44z" fill="#2d5584"/>
+      <rect x="-22" y="44" width="44" height="6" fill="#d9a21b" opacity=".85"/>
+      <!-- other arm -->
+      <path d="M-20 26l-12 30 6 4 14-26z" fill="#2d5584"/><circle cx="-28" cy="60" r="5" fill="#e8b48f"/>
+      <!-- working arm w/ wrench -->
+      <g id="arm"><path d="M14 22l10-44 9 2-8 46z" fill="#2d5584"/><circle cx="29" cy="-24" r="5.5" fill="#e8b48f"/><path d="M29 -26l18 -14" stroke="#c7cdd2" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="-41" r="5" fill="none" stroke="#c7cdd2" stroke-width="3"/></g>
+      <!-- head -->
+      <circle cx="0" cy="-2" r="13" fill="#e8b48f"/>
+      <path d="M-14 -6q2-14 14-14t14 12z" fill="#1d1d1d"/><path d="M8 -8h12v4H6z" fill="#1d1d1d"/>
+    </g>
+    <!-- mechanic on break (beside lowered car, sipping) -->
+    <g id="mechBreak" transform="translate(640 440)">
+      <path d="M-14 70l-4 52h14l4-40 4 40h14l-4-52z" fill="#244266"/>
+      <rect x="-22" y="118" width="20" height="8" rx="3" fill="#111"/><rect x="2" y="118" width="20" height="8" rx="3" fill="#111"/>
+      <path d="M-22 22q0-10 10-12h24q10 2 10 12v50h-44z" fill="#2d5584"/>
+      <rect x="-22" y="44" width="44" height="6" fill="#d9a21b" opacity=".85"/>
+      <path d="M-20 26l-6 40 8 1 6-36z" fill="#2d5584"/><circle cx="-22" cy="70" r="5" fill="#e8b48f"/>
+      <path d="M16 26l4 26-22 4-2-8 16-2-4-18z" fill="#2d5584"/><circle cx="-6" cy="50" r="5" fill="#e8b48f"/>
+      <path d="M-14 36h14l-2 16h-10z" fill="#f4efe6"/><rect x="-14" y="42" width="14" height="5" fill="#f2a33a"/>
+      <g class="steam" transform="translate(-7 30)"><path d="M0 0q-5 -8 0 -14t0 -14"/><path d="M4 2q-5 -8 0 -14t0 -14"/></g>
+      <circle cx="0" cy="-2" r="13" fill="#e8b48f"/>
+      <path d="M-14 -6q2-14 14-14t14 12z" fill="#1d1d1d"/><path d="M8 -8h12v4H6z" fill="#1d1d1d"/>
+    </g>
+    <!-- car on lift -->
+    <g id="carLift">
+      <g transform="translate(200 300)">
+        <!-- lift arms -->
+        <rect x="-22" y="92" width="80" height="8" fill="#8a6c14"/><rect x="242" y="92" width="80" height="8" fill="#8a6c14"/>
+        <rect x="40" y="86" width="16" height="8" fill="#222"/><rect x="244" y="86" width="16" height="8" fill="#222"/>
+        <!-- body -->
+        <path d="M8 84V58q2-12 20-15l48-5 34-30q5-4 15-4h104q10 0 16 7l30 33q22 4 23 16v24q0 6-8 6H16q-8 0-8-6z" fill="url(#gCar)"/>
+        <!-- windows -->
+        <path d="M86 40l30-27q3-3 9-3h46v30z" fill="#1d2a30"/><path d="M178 10h48q6 0 10 5l22 25h-80z" fill="#1d2a30"/>
+        <path d="M96 30l12-11" stroke="#9fc4d0" stroke-width="3" opacity=".35" stroke-linecap="round"/>
+        <!-- details -->
+        <path d="M174 10v74" stroke="#2f3d3d" stroke-width="2"/><path d="M120 50h14M196 50h14" stroke="#cfd8d6" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+        <path d="M290 54h12v8h-12z" fill="#ffd28a"/><path d="M8 54h10v10H8z" fill="#c94b3b"/>
+        <rect x="8" y="76" width="300" height="8" fill="#26302f"/>
+        <!-- SP sticker -->
+        <circle cx="150" cy="66" r="7" fill="#f2a33a"/><text x="150" y="69" text-anchor="middle" font-size="7" font-weight="900" fill="#1a1209" font-family="sans-serif">SP</text>
+        <!-- wheels -->
+        <g><circle cx="66" cy="88" r="26" fill="#111"/><circle cx="66" cy="88" r="14" fill="#8e979b"/><circle cx="66" cy="88" r="4" fill="#333"/><path d="M66 74v28M52 88h28" stroke="#5c6467" stroke-width="3"/></g>
+        <g><circle cx="244" cy="88" r="26" fill="#111"/><circle cx="244" cy="88" r="14" fill="#8e979b"/><circle cx="244" cy="88" r="4" fill="#333"/><path d="M244 74v28M230 88h28" stroke="#5c6467" stroke-width="3"/></g>
+        <!-- underbody / exhaust -->
+        <path d="M100 96h110" stroke="#1a1a1a" stroke-width="6" stroke-linecap="round"/><path d="M20 100h40" stroke="#2a2a2a" stroke-width="4"/>
+      </g>
+    </g>
+  </g>
+  <!-- glass + frame of bay window -->
+  <rect x="110" y="110" width="790" height="500" fill="url(#gGlass)"/>
+  <path d="M160 600L330 110M200 600L370 110M640 600L740 110" stroke="#fff" stroke-opacity=".035" stroke-width="26"/>
+  <rect x="110" y="110" width="790" height="500" fill="none" stroke="#2a2723" stroke-width="16"/>
+  <rect x="533" y="110" width="12" height="500" fill="#2a2723"/>
+  <rect x="96" y="604" width="818" height="12" fill="#35302a"/>
+
+  <!-- ============ WAITING ROOM (right) ============ -->
+  <!-- pendant lamps -->
+  <path d="M1110 0v58M1440 0v64" stroke="#0a0908" stroke-width="2"/>
+  <path d="M1080 58h60l22 34h-104z" fill="#2c2621"/><ellipse cx="1110" cy="92" rx="52" ry="5" fill="#ffd28a"/>
+  <path d="M1416 64h48l18 28h-84z" fill="#2c2621"/><ellipse cx="1440" cy="92" rx="42" ry="4" fill="#ffd28a"/>
+
+  <!-- neon sign -->
+  <g class="neon" filter="url(#fGlow)">
+    <text x="1120" y="168" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-weight="900" font-size="46" letter-spacing="3" fill="none" stroke="#ffb64a" stroke-width="2.4">SP MOTORS</text>
+  </g>
+  <text x="1120" y="194" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" letter-spacing="6" fill="#8d7a5c">SINCE 1996 · SEONGSU</text>
+
+  <!-- price board -->
+  <g transform="translate(922 230)">
+    <rect width="54" height="170" rx="4" fill="#2a2420"/><rect x="5" y="5" width="44" height="160" rx="2" fill="#efe7d6" opacity=".9"/>
+    <text x="27" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#1b1814" font-family="Noto Sans KR,sans-serif">요금표</text>
+    <path d="M10 34h34M10 48h28M10 62h34M10 76h22M10 90h34M10 104h26M10 118h34M10 132h30M10 146h20" stroke="#8a7f6c" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- TV status board -->
+  <ellipse cx="1120" cy="300" rx="220" ry="140" fill="url(#gTV)"/>
+  <g transform="translate(990 222)">
+    <rect width="260" height="156" rx="8" fill="#0b0b0b"/>
+    <rect x="8" y="8" width="244" height="140" rx="3" fill="#0d1a1b"/>
+    <circle cx="22" cy="24" r="4" fill="#e2513b" class="flick"/>
+    <text x="32" y="28" font-family="Noto Sans KR,sans-serif" font-size="11" fill="#7fb8ad" font-weight="700">정비 현황 LIVE</text>
+    <text x="240" y="28" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="#5f8a82" id="tvSess">1회차</text>
+    <text x="22" y="64" font-family="JetBrains Mono,monospace" font-size="24" font-weight="700" fill="#e9fff9" id="tvPlate">12가 3456</text>
+    <text x="22" y="86" font-family="Noto Sans KR,sans-serif" font-size="12" fill="#9fc9c0" id="tvJob">엔진오일 교환 · 박 반장</text>
+    <rect x="22" y="104" width="216" height="8" rx="4" fill="#173030"/>
+    <rect x="22" y="104" width="0" height="8" rx="4" fill="#3fd0b0" id="tvBar"/>
+    <text x="22" y="134" font-family="Noto Sans KR,sans-serif" font-size="13" font-weight="700" fill="#3fd0b0" id="tvStatus">작업 중</text>
+    <text x="238" y="134" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="13" fill="#9fc9c0" id="tvPct">0%</text>
+    <rect x="110" y="156" width="40" height="18" fill="#0b0b0b"/>
+  </g>
+
+  <!-- window with rain -->
+  <rect x="1300" y="148" width="260" height="354" fill="#2a2520"/>
+  <rect x="1312" y="160" width="236" height="330" fill="url(#gOut)"/>
+  <g clip-path="url(#cWin)">
+    <path d="M1312 360h40v-110h50v80h40v-150h56v120h50v190h-236z" fill="#0b131b"/>
+    <g fill="#ffcc77" opacity=".5"><rect x="1360" y="270" width="7" height="9"/><rect x="1376" y="300" width="7" height="9"/><rect x="1452" y="210" width="7" height="9"/><rect x="1468" y="240" width="7" height="9"/><rect x="1452" y="290" width="7" height="9" opacity=".6"/><rect x="1510" y="340" width="7" height="9"/></g>
+    <ellipse cx="1340" cy="330" rx="60" ry="60" fill="url(#gStreet)" opacity=".7"/>
+    <rect x="1312" y="440" width="236" height="50" fill="#141e27"/>
+    <g class="headlights" id="hl2"><ellipse cx="1430" cy="446" rx="80" ry="18" fill="url(#gHead)"/><circle cx="1412" cy="446" r="4" fill="#fffbe8"/><circle cx="1448" cy="446" r="4" fill="#fffbe8"/></g>
+    <g class="rain" id="rainWin"></g>
+    <g id="drops"></g>
+  </g>
+  <path d="M1430 160v330M1312 325h236" stroke="#2a2520" stroke-width="8"/>
+  <rect x="1296" y="498" width="268" height="10" fill="#3a332b"/>
+
+  <!-- wall clock -->
+  <g transform="translate(1226 452)">
+    <circle r="40" fill="#efe7d6" stroke="#2a2420" stroke-width="5"/>
+    <g stroke="#1b1814" stroke-width="2.4" stroke-linecap="round"><path d="M0-32v6M0 26v6M-32 0h6M26 0h6"/></g>
+    <text y="-12" text-anchor="middle" font-size="7" font-weight="900" fill="#1b1814" font-family="sans-serif">SP</text>
+    <path id="hH" d="M0 4V-18" stroke="#1b1814" stroke-width="4" stroke-linecap="round"/>
+    <path id="hM" d="M0 5V-27" stroke="#1b1814" stroke-width="2.6" stroke-linecap="round"/>
+    <path id="hS" d="M0 8V-30" stroke="#d9503a" stroke-width="1.2" stroke-linecap="round"/>
+    <circle r="3" fill="#1b1814"/>
+  </g>
+
+  <!-- coffee vending machine -->
+  <g transform="translate(985 420)">
+    <rect width="130" height="282" rx="8" fill="#5a241d"/>
+    <rect x="8" y="8" width="114" height="62" rx="4" fill="#2a110d"/>
+    <text x="65" y="34" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-weight="900" font-size="18" fill="#ffcf7a" filter="url(#fGlow)">COFFEE</text>
+    <text x="65" y="56" text-anchor="middle" font-family="Noto Sans KR,sans-serif" font-size="11" fill="#e8b48f">무료 · 고객 전용</text>
+    <g fill="#f4efe6"><rect x="14" y="84" width="30" height="16" rx="3"/><rect x="50" y="84" width="30" height="16" rx="3"/><rect x="86" y="84" width="30" height="16" rx="3"/><rect x="14" y="106" width="30" height="16" rx="3"/><rect x="50" y="106" width="30" height="16" rx="3"/><rect x="86" y="106" width="30" height="16" rx="3"/></g>
+    <g fill="#3fd0b0"><circle cx="40" cy="92" r="2"/><circle cx="76" cy="92" r="2"/><circle cx="112" cy="92" r="2"/></g>
+    <rect x="30" y="150" width="70" height="72" rx="4" fill="#140807" stroke="#2a110d" stroke-width="3"/>
+    <rect x="34" y="154" width="62" height="10" fill="#ffcf7a" opacity=".35"/>
+    <rect x="58" y="164" width="14" height="10" fill="#3a1a12"/>
+    <path d="M54 196h22l-3 24h-16z" fill="#f4efe6"/><rect x="55" y="204" width="20" height="6" fill="#f2a33a"/>
+    <rect x="96" y="236" width="20" height="30" rx="3" fill="#2a110d"/>
+    <rect x="-2" y="276" width="134" height="8" rx="2" fill="#2a110d"/>
+  </g>
+
+  <!-- sofa -->
+  <g transform="translate(1150 560)">
+    <rect x="20" y="0" width="390" height="70" rx="16" fill="#4c3b2d"/>
+    <rect x="20" y="58" width="390" height="56" rx="12" fill="#5b4736"/>
+    <path d="M215 64v48" stroke="#433426" stroke-width="3"/>
+    <rect x="0" y="34" width="40" height="92" rx="14" fill="#433426"/><rect x="390" y="34" width="40" height="92" rx="14" fill="#433426"/>
+    <rect x="30" y="122" width="10" height="20" fill="#1b140e"/><rect x="390" y="122" width="10" height="20" fill="#1b140e"/>
+    <!-- cushion -->
+    <rect x="50" y="20" width="70" height="52" rx="14" fill="#c98f4a" transform="rotate(-8 85 46)"/>
+    <!-- cat -->
+    <g transform="translate(300 26)">
+      <g id="catBody"><ellipse cx="0" cy="32" rx="44" ry="22" fill="#d9c3a2"/><path d="M-30 30q8-14 22-8" stroke="#b49a76" stroke-width="3" fill="none"/><path d="M6 20q10 -6 20 0" stroke="#b49a76" stroke-width="3" fill="none"/></g>
+      <path id="catTail" d="M40 40q22 2 14 18q-8 12 -30 6" fill="none" stroke="#d9c3a2" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="-34" cy="28" r="17" fill="#d9c3a2"/>
+      <path d="M-46 16l-3-14 12 8zM-26 14l4-13 6 12z" fill="#d9c3a2"/>
+      <path d="M-42 28q4 3 8 0M-30 28q4 3 8 0" stroke="#5a4732" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="-34" cy="34" r="1.6" fill="#b06a5a"/>
+      <text x="-60" y="-2" font-family="sans-serif" font-size="12" fill="#a59d91" class="zzz" opacity=".7">z</text>
+    </g>
+  </g>
+
+  <!-- plant (left) -->
+  <g transform="translate(58 610)">
+    <path d="M-26 0h52l-8 92h-36z" fill="#3a3129"/>
+    <g fill="#2f5a3a"><path d="M0 0q-40-60-20-150q16 70 20 150z"/><path d="M0 0q44-50 30-140q-24 60-30 140z" fill="#3b6c47"/><path d="M0 0q-60-20-62-90q40 30 62 90z" fill="#28503a"/><path d="M0 0q50-10 64-70q-46 16-64 70z" fill="#346246"/></g>
+  </g>
+
+  <!-- foreground table -->
+  <path d="M60 812 Q800 790 1540 812 L1600 900 H0Z" fill="url(#gTable)"/>
+  <path d="M60 812 Q800 790 1540 812" stroke="#7a5a40" stroke-width="2" fill="none" opacity=".6"/>
+  <!-- magazine -->
+  <g transform="translate(200 822) rotate(-6)"><rect width="150" height="56" rx="3" fill="#d8d1c4"/><rect x="8" y="8" width="60" height="40" fill="#3b5b78"/><path d="M78 14h60M78 24h50M78 34h56" stroke="#7e766a" stroke-width="3"/><text x="38" y="34" text-anchor="middle" font-size="9" font-weight="900" fill="#eee" font-family="Noto Sans KR,sans-serif">월간 자동차</text></g>
+  <!-- car key with tag -->
+  <g transform="translate(410 834) rotate(12)"><circle r="10" fill="none" stroke="#bfc3c6" stroke-width="3"/><rect x="8" y="-9" width="38" height="18" rx="7" fill="#1c1c1c"/><circle cx="20" cy="0" r="3" fill="#444"/><path d="M-8 6l-30 14" stroke="#bfc3c6" stroke-width="2"/><rect x="-74" y="14" width="40" height="22" rx="3" fill="#f2a33a" transform="rotate(-20 -54 25)"/><text x="-56" y="34" text-anchor="middle" font-size="9" font-weight="900" fill="#1a1209" font-family="JetBrains Mono,monospace" transform="rotate(-20 -54 25)" id="keyTag">0427</text></g>
+  <!-- paper cup coffee -->
+  <g transform="translate(1290 760)">
+    <ellipse cx="0" cy="62" rx="40" ry="8" fill="#000" opacity=".35"/>
+    <path d="M-28 0h56l-7 60h-42z" fill="#f4efe6"/>
+    <path d="M-26 16h52l-3 26h-46z" fill="#f2a33a"/>
+    <text x="0" y="34" text-anchor="middle" font-size="11" font-weight="900" fill="#1a1209" font-family="Noto Sans KR,sans-serif">SP</text>
+    <ellipse cx="0" cy="0" rx="28" ry="6" fill="#e2dccf"/><ellipse cx="0" cy="1" rx="23" ry="4" fill="#4a2c18"/>
+    <g class="steam"><path d="M-8 -6q-6 -10 0 -18t0 -18"/><path d="M4 -6q-6 -10 0 -18t0 -18"/><path d="M14 -4q-6 -10 0 -18t0 -18"/></g>
+  </g>
+  <!-- clipboard -->
+  <g transform="translate(1390 800) rotate(-8)"><rect width="110" height="80" rx="4" fill="#3a2a1d"/><rect x="8" y="10" width="94" height="70" fill="#efe7d6"/><rect x="38" y="2" width="34" height="12" rx="3" fill="#9aa1a6"/><path d="M16 28h70M16 40h56M16 52h66" stroke="#9a8f7a" stroke-width="3"/></g>
+</svg>
+
+  <div class="hint">
+    <button class="iconbtn" id="fsBtn" aria-label="전체 화면"><svg><use href="#i-full2"/></svg></button>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <div class="panel" id="panel">
+    <div class="mixer" id="mixer">
+      <h4>대기실 소리 조절</h4>
+      <div class="mrow"><span>라디오 음악</span><input type="range" min="0" max="100" data-k="music"></div>
+      <div class="mrow"><span>빗소리</span><input type="range" min="0" max="100" data-k="rain"></div>
+      <div class="mrow"><span>작업장 공구</span><input type="range" min="0" max="100" data-k="shop"></div>
+      <div class="mrow"><span>지나가는 차</span><input type="range" min="0" max="100" data-k="car"></div>
+      <div class="mrow"><span>히터 웅웅</span><input type="range" min="0" max="100" data-k="heater"></div>
+    </div>
+    <div class="p-top">
+      <span class="mode"><i></i><span id="modeTxt">작업 중 · 1회차</span></span>
+      <button class="ctl" id="endBtn" aria-label="나가기" style="width:28px;height:28px"><svg style="width:14px;height:14px"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="time" id="time">25:00</div>
+    <div class="prog"><i id="progBar"></i></div>
+    <div class="p-bot">
+      <div class="np"><small id="radioTxt">SP 라디오</small><b id="trackTxt">—</b></div>
+      <button class="ctl" id="mixBtn" aria-label="소리 조절"><svg><use href="#i-mix"/></svg></button>
+      <button class="ctl play" id="playBtn" aria-label="일시정지/재생"><svg><use href="#i-pause" id="playIcon"/></svg></button>
+      <button class="ctl" id="nextBtn" aria-label="다음 곡"><svg><use href="#i-next"/></svg></button>
+    </div>
+    <div class="confirm" id="confirm">
+      <p>정비를 마치고 대기실을 나갈까요?</p>
+      <div><button id="cNo">더 있을래요</button><button class="y" id="cYes">출고하기</button></div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ================= data ================= */
+const SERVICES=[
+  {id:'oil',name:'엔진오일 교환',min:25,icon:'i-oil'},
+  {id:'tire',name:'타이어 교체',min:30,icon:'i-tire'},
+  {id:'brake',name:'브레이크 점검',min:45,icon:'i-brake'},
+  {id:'batt',name:'배터리 교체',min:15,icon:'i-batt'},
+  {id:'ac',name:'에어컨 점검',min:25,icon:'i-ac'},
+  {id:'wash',name:'실내 세차',min:20,icon:'i-wash'},
+  {id:'wiper',name:'와이퍼 교체',min:10,icon:'i-wiper'},
+  {id:'full',name:'종합 점검',min:50,icon:'i-full'}
+];
+const MECHS=['박 반장','김 실장','이 기사','최 팀장','정 반장'];
+const TRACKS=[
+  {title:'Waiting Room Waltz',file:'music/Waiting_Room_Waltz.mp3'},
+  {title:'Midnight Oil Change',file:'music/Midnight_Oil_Change.mp3'},
+  {title:'Shelter Under Tin',file:'music/Shelter_Under_Tin.mp3'},
+  {title:'Sheltered Workbench',file:'music/Sheltered_Workbench.mp3'}
+];
+
+/* ================= state ================= */
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem('spm_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('spm_'+k,JSON.stringify(v))}catch(e){}}};
+const S={svc:store.get('svc',0),focus:25,rest:store.get('rest',5),plate:store.get('plate',''),mech:MECHS[Math.floor(Math.random()*MECHS.length)],
+  muted:store.get('muted',false),vol:Object.assign({music:70,rain:55,shop:35,car:40,heater:20},store.get('vol',{})),
+  mode:'focus',session:1,total:0,endAt:0,remain:0,running:false,track:0,woNo:String(Math.floor(1000+Math.random()*8999))};
+S.focus=store.get('focus',SERVICES[S.svc].min);
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id))}
+
+/* ================= kiosk ================= */
+const grid=$('#grid');
+SERVICES.forEach((s,i)=>{const b=document.createElement('button');b.className='tile'+(i===S.svc?' sel':'');
+  b.innerHTML=`<svg><use href="#${s.icon}"/></svg><b>${s.name}</b><i>${s.min}분</i>`;
+  b.onclick=()=>{S.svc=i;S.focus=s.min;grid.querySelectorAll('.tile').forEach((t,j)=>t.classList.toggle('sel',j===i));uiBeep(660+i*40)};grid.appendChild(b)});
+function setSoundIcon(){$('#kSound use').setAttribute('href',S.muted?'#i-mute':'#i-vol')}
+setSoundIcon();
+$('#kSound').onclick=()=>{S.muted=!S.muted;store.set('muted',S.muted);setSoundIcon();if(A.ctx)A.master.gain.setTargetAtTime(S.muted?0:1,A.ctx.currentTime,.05);audio.muted=S.muted;uiBeep(880)};
+$('#toOrder').onclick=()=>{uiBeep(990);buildOrder();show('order')};
+$('#backK').onclick=()=>{uiBeep(520);show('kiosk')};
+
+/* ================= work order ================= */
+function fmtDate(d){const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}.${p(d.getMonth()+1)}.${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`}
+function buildOrder(){
+  const s=SERVICES[S.svc];
+  $('#woNo').textContent=S.woNo;$('#woDate').textContent=fmtDate(new Date());
+  $('#woJob').innerHTML=`<svg><use href="#${s.icon}"/></svg>${s.name}`;
+  $('#woMech').textContent=S.mech;$('#plate').value=S.plate;$('#stamp').classList.remove('on');
+  chips('#fChips',[s.min,s.min===25?50:25],'focus',[1,180]);
+  chips('#rChips',[5,10],'rest',[1,60]);
+  updSum();
+}
+function chips(sel,opts,key,range){
+  const box=$(sel);box.innerHTML='';
+  opts=[...new Set(opts)];
+  const custom=!opts.includes(S[key]);
+  opts.forEach(v=>{const b=document.createElement('button');b.className='chip'+(S[key]===v?' sel':'');b.textContent=v+'분';
+    b.onclick=()=>{S[key]=v;uiBeep(720);chips(sel,opts,key,range);updSum()};box.appendChild(b)});
+  const c=document.createElement('label');c.className='chip'+(custom?' sel':'');
+  c.innerHTML=`<input type="number" inputmode="numeric" min="${range[0]}" max="${range[1]}" placeholder="직접" value="${custom?S[key]:''}">${custom?'분':''}`;
+  const inp=c.querySelector('input');
+  inp.oninput=()=>{const v=Math.max(range[0],Math.min(range[1],parseInt(inp.value)||0));if(v){S[key]=v;box.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');updSum()}};
+  box.appendChild(c);
+}
+function updSum(){$('#woSum').textContent=`집중 ${S.focus}분 · 휴식 ${S.rest}분`}
+$('#plate').oninput=e=>{S.plate=e.target.value.trim()};
+$('#toRoom').onclick=()=>{
+  if(!S.plate)S.plate=['12가','34나','56다','78라'][Math.floor(Math.random()*4)]+' '+String(Math.floor(1000+Math.random()*8999));
+  store.set('svc',S.svc);store.set('focus',S.focus);store.set('rest',S.rest);store.set('plate',S.plate);
+  $('#stamp').classList.add('on');initAudio();stampSound();
+  setTimeout(enterRoom,750);
+};
+
+/* ================= scene build ================= */
+const NS='http://www.w3.org/2000/svg';
+function rain(gid,x0,x1,y0,y1,n){const g=document.getElementById(gid);
+  for(let i=0;i<n;i++){const l=document.createElementNS(NS,'line');const x=x0+Math.random()*(x1-x0+60),y=y0+Math.random()*(y1-y0);const len=12+Math.random()*16;
+    l.setAttribute('x1',x);l.setAttribute('y1',y);l.setAttribute('x2',x-len*.1);l.setAttribute('y2',y+len);
+    l.style.animationDuration=(.45+Math.random()*.35)+'s';l.style.animationDelay=(-Math.random()*1)+'s';l.style.opacity=.35+Math.random()*.6;g.appendChild(l)}}
+function splashes(gid,x0,x1,y0,y1,n){const g=document.getElementById(gid);for(let i=0;i<n;i++){const e=document.createElementNS(NS,'ellipse');e.setAttribute('cx',x0+Math.random()*(x1-x0));e.setAttribute('cy',y0+Math.random()*(y1-y0));e.setAttribute('rx',6);e.setAttribute('ry',2);e.setAttribute('class','splash');e.style.animationDelay=(-Math.random())+'s';e.style.animationDuration=(.7+Math.random()*.6)+'s';g.appendChild(e)}}
+function drops(){const g=document.getElementById('drops');for(let i=0;i<34;i++){const c=document.createElementNS(NS,'circle');c.setAttribute('cx',1316+Math.random()*228);c.setAttribute('cy',164+Math.random()*320);c.setAttribute('r',1+Math.random()*2.6);c.setAttribute('class','drop');if(Math.random()<.25){c.classList.add('drip');c.style.animationDuration=(6+Math.random()*10)+'s';c.style.animationDelay=(-Math.random()*10)+'s'}g.appendChild(c)}}
+rain('rainDoor',580,870,214,565,110);rain('rainWin',1312,1548,160,490,80);splashes('splashDoor',585,865,505,560,14);drops();
+function fitView(){const r=innerWidth/innerHeight;const svg=$('#room');const w=Math.min(1600,900*r);const fc=r<.8?520:640;const l=Math.max(0,Math.min(1600-w,fc-w/2));svg.setAttribute('viewBox',w>=1600?'0 0 1600 900':`${l.toFixed(0)} 0 ${w.toFixed(0)} 900`)}
+addEventListener('resize',fitView);fitView();
+function clock(){const d=new Date();const h=d.getHours()%12,m=d.getMinutes(),s=d.getSeconds();
+  $('#hH').setAttribute('transform',`rotate(${h*30+m*.5})`);$('#hM').setAttribute('transform',`rotate(${m*6+s*.1})`);$('#hS').setAttribute('transform',`rotate(${s*6})`)}
+setInterval(clock,1000);clock();
+
+/* ================= room / timer ================= */
+const room=$('#room'),panel=$('#panel');
+function enterRoom(){
+  const s=SERVICES[S.svc];
+  $('#tvPlate').textContent=S.plate;$('#tvJob').textContent=`${s.name} · ${S.mech}`;$('#keyTag').textContent=S.woNo;
+  show('scene');S.session=1;startPhase('focus');
+  startMusic();toast(`${S.mech}님이 차를 리프트에 올렸어요. 작업 시작!`);
+}
+function startPhase(mode){
+  S.mode=mode;S.total=(mode==='focus'?S.focus:S.rest)*60;S.endAt=Date.now()+S.total*1000;S.running=true;
+  room.classList.toggle('lowered',mode==='rest');
+  panel.classList.toggle('rest',mode==='rest');panel.classList.remove('paused');setPlayIcon();render();
+}
+function remaining(){return S.running?Math.max(0,(S.endAt-Date.now())/1000):S.remain}
+function render(){
+  const r=remaining();const m=Math.floor(Math.ceil(r)/60),s=Math.ceil(r)%60;const t=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  $('#time').textContent=t;
+  const p=S.total?1-r/S.total:0;$('#progBar').style.width=(p*100)+'%';
+  const isF=S.mode==='focus';
+  $('#modeTxt').textContent=(S.running?(isF?'작업 중':'커피 타임'):'일시 정지')+` · ${S.session}회차`;
+  $('#tvSess').textContent=S.session+'회차';
+  $('#tvStatus').textContent=isF?(S.running?'작업 중':'작업 대기'):'정비사 휴식 중';
+  $('#tvStatus').setAttribute('fill',isF?'#3fd0b0':'#f2a33a');
+  $('#tvBar').setAttribute('fill',isF?'#3fd0b0':'#f2a33a');
+  $('#tvBar').setAttribute('width',216*p);$('#tvPct').textContent=Math.floor(p*100)+'%';
+  room.classList.toggle('working',isF&&S.running);
+  if(TRACKS.length&&audio.duration){const f=x=>`${Math.floor(x/60)}:${String(Math.floor(x%60)).padStart(2,'0')}`;$('#radioTxt').textContent=`SP 라디오 · ${f(audio.currentTime)} / ${f(audio.duration)}`}
+  if($('#scene').classList.contains('on'))document.title=`${t} · ${isF?'작업 중':'휴식'} — SP Motors`;
+}
+setInterval(()=>{if(!$('#scene').classList.contains('on'))return;if(S.running&&remaining()<=0)phaseDone();render()},250);
+function phaseDone(){
+  chime();
+  if(S.mode==='focus'){toast(`작업 ${S.session}회차 완료! 커피 한 잔 하세요 · 휴식 ${S.rest}분`);startPhase('rest')}
+  else{S.session++;toast(`휴식 끝 — ${S.session}회차 작업 들어갑니다`);startPhase('focus')}
+}
+function setPlayIcon(){$('#playIcon').setAttribute('href',S.running?'#i-pause':'#i-play')}
+$('#playBtn').onclick=()=>{
+  if(S.running){S.remain=remaining();S.running=false;audio.pause();suspendAmb(true);panel.classList.add('paused')}
+  else{S.endAt=Date.now()+S.remain*1000;S.running=true;if(TRACKS.length)audio.play().catch(()=>{});suspendAmb(false);panel.classList.remove('paused')}
+  setPlayIcon();render();
+};
+$('#nextBtn').onclick=()=>{nextTrack()};
+$('#mixBtn').onclick=()=>{$('#mixer').classList.toggle('on');$('#mixBtn').classList.toggle('on')};
+$('#endBtn').onclick=()=>$('#confirm').classList.add('on');
+$('#cNo').onclick=()=>$('#confirm').classList.remove('on');
+$('#cYes').onclick=()=>{$('#confirm').classList.remove('on');S.running=false;audio.pause();suspendAmb(true);document.title='SP Motors 대기실 — 비 오는 날의 집중 공간';room.classList.remove('lowered');show('kiosk')};
+$('#fsBtn').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}};
+document.addEventListener('keydown',e=>{if(!$('#scene').classList.contains('on')||e.target.tagName==='INPUT')return;if(e.code==='Space'){e.preventDefault();$('#playBtn').click()}if(e.key==='n')nextTrack()});
+let toastT;function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),4200)}
+
+/* ================= music ================= */
+const audio=new Audio();audio.preload='auto';audio.muted=S.muted;
+S.track=Math.floor(Math.random()*Math.max(1,TRACKS.length));
+function loadTrack(i){if(!TRACKS.length){$('#trackTxt').textContent='라디오 꺼짐 · 빗소리만';return}S.track=(i+TRACKS.length)%TRACKS.length;const t=TRACKS[S.track];audio.src=t.file;$('#trackTxt').textContent=t.title;audio.volume=S.vol.music/100}
+function startMusic(){loadTrack(S.track);if(TRACKS.length)audio.play().catch(()=>{})}
+function nextTrack(){if(!TRACKS.length)return;loadTrack(S.track+1);if(S.running)audio.play().catch(()=>{});toast('♪ '+TRACKS[S.track].title)}
+audio.addEventListener('ended',()=>nextTrack());
+audio.addEventListener('error',()=>{$('#radioTxt').textContent='SP 라디오 · 신호 없음'});
+
+/* ================= synth ambience ================= */
+const A={ctx:null};
+function initAudio(){
+  if(A.ctx){if(A.ctx.state==='suspended')A.ctx.resume();return}
+  const C=new (window.AudioContext||window.webkitAudioContext)();A.ctx=C;
+  A.master=C.createGain();A.master.gain.value=S.muted?0:1;A.master.connect(C.destination);
+  const len=C.sampleRate*4;
+  A.white=C.createBuffer(2,len,C.sampleRate);A.brown=C.createBuffer(2,len,C.sampleRate);
+  for(let ch=0;ch<2;ch++){const w=A.white.getChannelData(ch),b=A.brown.getChannelData(ch);let last=0;for(let i=0;i<len;i++){const r=Math.random()*2-1;w[i]=r;last=(last+.02*r)/1.02;b[i]=last*3.5}}
+  A.bus={};['rain','shop','car','heater'].forEach(k=>{const g=C.createGain();g.gain.value=busVol(k);g.connect(A.master);A.bus[k]=g});
+  // rain bed
+  loopNoise(A.white,[['highpass',600],['lowpass',5200]],.22,A.bus.rain);
+  loopNoise(A.brown,[['lowpass',500]],.45,A.bus.rain);
+  loopNoise(A.white,[['bandpass',1800,.6]],.05,A.bus.rain);
+  patter();
+  // heater hum
+  loopNoise(A.brown,[['lowpass',160]],.9,A.bus.heater);
+  const o=C.createOscillator();o.frequency.value=60;const og=C.createGain();og.gain.value=.025;o.connect(og).connect(A.bus.heater);o.start();
+  shopLoop();carLoop();
+}
+function busVol(k){const v=S.vol[k]/100;return v*v*1.4}
+function loopNoise(buf,filters,gain,dest){const C=A.ctx;const s=C.createBufferSource();s.buffer=buf;s.loop=true;s.loopStart=Math.random();let n=s;
+  filters.forEach(([t,f,q])=>{const fl=C.createBiquadFilter();fl.type=t;fl.frequency.value=f;if(q)fl.Q.value=q;n.connect(fl);n=fl});
+  const g=C.createGain();g.gain.value=gain;n.connect(g).connect(dest);s.start(0,Math.random()*3)}
+function burst(dest,{at=0,dur=.03,hp=0,lp=0,bp=0,q=1,gain=.2,pan=0,attack=.002}){
+  const C=A.ctx,t=C.currentTime+at;const s=C.createBufferSource();s.buffer=A.white;let n=s;
+  if(hp){const f=C.createBiquadFilter();f.type='highpass';f.frequency.value=hp;n.connect(f);n=f}
+  if(lp){const f=C.createBiquadFilter();f.type='lowpass';f.frequency.value=lp;n.connect(f);n=f}
+  if(bp){const f=C.createBiquadFilter();f.type='bandpass';f.frequency.value=bp;f.Q.value=q;n.connect(f);n=f}
+  const g=C.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(gain,t+attack);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  let out=g;if(C.createStereoPanner){const p=C.createStereoPanner();p.pan.value=pan;g.connect(p);out=p}
+  n.connect(g);out.connect(dest);s.start(t,Math.random()*3);s.stop(t+dur+.05)}
+function tone(dest,{f,at=0,dur=1,gain=.1,type='sine',pan=0}){const C=A.ctx,t=C.currentTime+at;const o=C.createOscillator();o.type=type;o.frequency.value=f;const g=C.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(gain,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+dur);let out=g;if(C.createStereoPanner){const p=C.createStereoPanner();p.pan.value=pan;g.connect(p);out=p}o.connect(g);out.connect(dest);o.start(t);o.stop(t+dur+.05)}
+function patter(){if(!A.ctx)return;if(!A.paused&&A.ctx.state==='running'){const n=2+Math.floor(Math.random()*4);for(let i=0;i<n;i++)burst(A.bus.rain,{at:Math.random()*.08,dur:.01+Math.random()*.03,hp:2500,bp:3000+Math.random()*4000,q:3,gain:.05+Math.random()*.12,pan:Math.random()*1.6-.8})}setTimeout(patter,40+Math.random()*70)}
+// workshop sounds
+function ratchet(){const n=6+Math.floor(Math.random()*9),pan=-.5+Math.random()*.4;room.classList.add('working');for(let i=0;i<n;i++){burst(A.bus.shop,{at:i*.055,dur:.025,hp:2200,gain:.32,pan});tone(A.bus.shop,{f:3100+Math.random()*300,at:i*.055,dur:.03,gain:.03,pan})}}
+function impact(){const C=A.ctx,t=C.currentTime,d=.5+Math.random()*.8,pan=-.4;const o=C.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(70,t);o.frequency.linearRampToValueAtTime(52,t+d);
+  const lfo=C.createOscillator();lfo.type='square';lfo.frequency.value=26;const lg=C.createGain();lg.gain.value=.5;const am=C.createGain();am.gain.value=.5;lfo.connect(lg).connect(am.gain);
+  const f=C.createBiquadFilter();f.type='lowpass';f.frequency.value=900;const g=C.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+.03);g.gain.setValueAtTime(.16,t+d-.05);g.gain.linearRampToValueAtTime(0,t+d);
+  let out=g;if(C.createStereoPanner){const p=C.createStereoPanner();p.pan.value=pan;g.connect(p);out=p}
+  o.connect(f).connect(am).connect(g);out.connect(A.bus.shop);o.start(t);lfo.start(t);o.stop(t+d+.05);lfo.stop(t+d+.05);
+  burst(A.bus.shop,{dur:d,bp:1400,q:2,gain:.12,pan,attack:.03})}
+function clank(){const pan=Math.random()*.8-.6,b=400+Math.random()*300;[1,2.27,3.8,5.4].forEach((m,i)=>tone(A.bus.shop,{f:b*m,dur:.6+Math.random()*.6-i*.08,gain:.07/(i+1),pan}))}
+function airgun(){burst(A.bus.shop,{dur:.35+Math.random()*.4,hp:2500,lp:9000,gain:.12,pan:-.6,attack:.02})}
+function shopLoop(){if(A.ctx&&!A.paused&&S.mode==='focus'&&A.ctx.state==='running'){const r=Math.random();if(r<.45)ratchet();else if(r<.68){impact();if(Math.random()<.5)setTimeout(()=>A.ctx&&impact(),900+Math.random()*700)}else if(r<.9)clank();else airgun()}setTimeout(shopLoop,3500+Math.random()*7000)}
+// passing car on wet road
+function passCar(){const C=A.ctx,t=C.currentTime,d=5.5,dir=Math.random()<.5?1:-1;
+  const s=C.createBufferSource();s.buffer=A.white;s.loop=true;const s2=C.createBufferSource();s2.buffer=A.brown;s2.loop=true;
+  const f=C.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(300,t);f.frequency.linearRampToValueAtTime(1600,t+d/2);f.frequency.linearRampToValueAtTime(300,t+d);
+  const f2=C.createBiquadFilter();f2.type='lowpass';f2.frequency.value=260;
+  const g=C.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.38,t+d/2);g.gain.linearRampToValueAtTime(0,t+d);
+  let out=g;if(C.createStereoPanner){const p=C.createStereoPanner();p.pan.setValueAtTime(-.9*dir,t);p.pan.linearRampToValueAtTime(.9*dir,t+d);g.connect(p);out=p}
+  const sg=C.createGain();sg.gain.value=.5;s.connect(f).connect(g);s2.connect(f2).connect(sg).connect(g);out.connect(A.bus.car);
+  s.start(t,Math.random()*3);s2.start(t,Math.random()*3);s.stop(t+d+.1);s2.stop(t+d+.1);
+  ['hl1','hl2'].forEach((id,i)=>{const el=document.getElementById(id);el.style.animationDirection=dir>0?'normal':'reverse';el.classList.remove('go');void el.getBoundingClientRect();setTimeout(()=>el.classList.add('go'),i*400)})}
+function carLoop(){if(A.ctx&&!A.paused&&A.ctx.state==='running'&&S.vol.car>0)passCar();setTimeout(carLoop,12000+Math.random()*16000)}
+function suspendAmb(p){A.paused=p;if(!A.ctx)return;Object.values(A.bus).forEach(g=>g.gain.setTargetAtTime(p?0:1*1,A.ctx.currentTime,.3));if(!p)Object.keys(A.bus).forEach(k=>A.bus[k].gain.setTargetAtTime(busVol(k),A.ctx.currentTime,.3))}
+function chime(){if(!A.ctx)return;[[659.25,0],[523.25,.45]].forEach(([f,at])=>{tone(A.master,{f,at,dur:1.8,gain:.16,type:'sine'});tone(A.master,{f:f*2,at,dur:1,gain:.03,type:'sine'})})}
+function uiBeep(f){if(!A.ctx||S.muted)return;tone(A.master,{f,dur:.08,gain:.05,type:'triangle'})}
+function stampSound(){if(!A.ctx)return;burst(A.master,{dur:.12,lp:500,gain:.6});tone(A.master,{f:90,dur:.15,gain:.25})}
+document.addEventListener('pointerdown',()=>{if(!A.ctx)initAudio()},{once:true});
+
+/* mixer */
+document.querySelectorAll('.mixer input').forEach(inp=>{const k=inp.dataset.k;inp.value=S.vol[k];
+  inp.oninput=()=>{S.vol[k]=+inp.value;store.set('vol',S.vol);if(k==='music')audio.volume=S.vol.music/100;else if(A.ctx&&!A.paused)A.bus[k].gain.setTargetAtTime(busVol(k),A.ctx.currentTime,.1)}});
+</script>
+</body>
+</html>
